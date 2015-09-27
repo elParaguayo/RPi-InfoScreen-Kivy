@@ -50,6 +50,7 @@ class LondonBusStop(Screen):
         super(LondonBusStop, self).__init__(**kwargs)
         self.stop = kwargs["stop"]
         self.description = self.stop["description"]
+        self.filters = None
 
     def on_enter(self):
         # Refresh the information when we load the screen
@@ -85,18 +86,22 @@ class LondonBusStop(Screen):
         """Create a list of toggle buttons to allow user to show which buses
            should be shown on the screen.
         """
-        # Clear the previous filter
-        self.ids.bx_filter.clear_widgets()
+        # If we've got no filter then we need to set it up:
+        if self.filters is None:
 
-        # Get the list of unique bus routes and apply a natural sort.
-        routes = sorted(set([x["route"] for x in self.buses]),
-                        key=natural_sort_key)
+            # Clear the previous filter
+            self.ids.bx_filter.clear_widgets()
 
-        # Create a toggle button for each route and set it as enabled for now.
-        for route in routes:
-            tb = ToggleButton(text=route, state="down")
-            tb.bind(state=self.toggled)
-            self.ids.bx_filter.add_widget(tb)
+            # Get the list of unique bus routes and apply a natural sort.
+            routes = sorted(set([x["route"] for x in self.buses]),
+                            key=natural_sort_key)
+
+            # Create a toggle button for each route and set it as enabled
+            # for now.
+            for route in routes:
+                tb = ToggleButton(text=route, state="down")
+                tb.bind(state=self.toggled)
+                self.ids.bx_filter.add_widget(tb)
 
         # Run the "toggled" method now as this updates which buses are shown.
         self.toggled(None, None)
