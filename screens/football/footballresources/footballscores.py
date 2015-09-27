@@ -964,6 +964,7 @@ class League(matchcommon):
             for match in rawmatches:
                 team = match.find("span", {"class": "team-home"}).text
                 m = FootballMatch(team, detailed=detailed, data=data)
+                m.scorelink = self.livescoreslink.format(comp=league)
                 matches.append(m)
 
         return matches
