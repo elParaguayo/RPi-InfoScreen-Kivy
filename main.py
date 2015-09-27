@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import os
+import sys
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.graphics import Rectangle, Color
@@ -15,6 +18,9 @@ from core.bglabel import BGLabel, BGLabelButton
 from core.hiddenbutton import HiddenButton
 from core.infoscreen import InfoScreen
 from core.getplugins import getPlugins
+
+# Set the current working directory
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
 
 class InfoScreenApp(App):
