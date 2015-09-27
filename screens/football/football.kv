@@ -1,0 +1,288 @@
+<FootballEvent>
+    id: football_lbl_goal
+    text: root.event_text
+    font_size: 0
+    bgcolour: 0,0,0,0
+
+<FootballBase>
+    FloatLayout:
+        id: base_float
+        Label:
+            id: lbl_load
+            text: "Searching for {} matches".format(root.teamname)
+
+<FootballScreen>
+    FloatLayout:
+        id: football_float
+
+        BoxLayout:
+            id: football_base_box
+            Label:
+                id: football_lbl_load
+                text: "Searching for match..."
+
+        ScreenManager:
+            id: football_scrmgr
+            auto_bring_to_front: False
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, root.height - 50
+            on_press: root.next_screen()
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, 0
+            on_press: root.next_screen(False)
+
+<FootballNoMatch>
+    Label:
+        text: "{} are not playing today.".format(root.teamname)
+
+<FootballMatchScreen>
+    BoxLayout:
+        orientation: "vertical"
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.2
+
+            AsyncImage:
+                source: root.homebadge
+
+            AsyncImage:
+                source: root.awaybadge
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.3
+
+            Label:
+                text: root.hometeam
+                font_size: 40
+
+            Label:
+                text: root.homescore
+                font_size: 45
+                size_hint_x: 0.15
+
+            Label:
+                text: "-"
+                size_hint_x: 0.1
+
+            Label:
+                text: root.awayscore
+                font_size: 45
+                size_hint_x: 0.15
+
+            Label:
+                text: root.awayteam
+                font_size: 40
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.1
+
+            Label:
+                text: root.status
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.4
+            valign: "top"
+
+            StackLayout:
+                id: home_incidents
+                width: 350
+                size_hint: None, 1
+                orientation: "tb-lr"
+
+            Label:
+                width: 100
+                size_hint_y: None
+                text: ""
+
+            StackLayout:
+                id: away_incidents
+                width: 350
+                size_hint: None, 1
+                orientation: "tb-lr"
+
+<LeagueBase>
+    FloatLayout:
+        id: base_float
+
+        BoxLayout:
+            id: league_box
+            orientation: "vertical"
+
+            Label:
+                text: root.leaguename
+                size_hint_y: 0.2
+
+<LeagueGame>
+    orientation: "vertical"
+    height: 40
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: 0.7
+        spacing: 5
+
+        BGLabel:
+            text: root.hometeam
+            halign: "right"
+
+        BGLabel:
+            text: root.homescore
+            bgcolour: root.homebg
+            size_hint_x: None
+            width: 25
+
+        BGLabel:
+            text: root.awayscore
+            bgcolour: root.awaybg
+            size_hint_x: None
+            width: 25
+
+        BGLabel:
+            text: root.awayteam
+            halign: "left"
+
+    Label:
+        text: root.status
+        font_size: 10
+        valign: "top"
+
+<LeagueDetail>
+    orientation: "vertical"
+    size: 750, 200
+    pos: 25, 140
+    size_hint: None, None
+    canvas.before:
+        Color:
+            rgba: 0.1,0.1,0.1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    on_press: root.parent.remove_widget(root)
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: 0.4
+        spacing: 5
+        padding: 10, 10, 10, 10
+
+        BGLabel:
+            text: root.hometeam
+            halign: "right"
+            font_size: 40
+
+        BGLabel:
+            text: root.homescore
+            bgcolour: root.homebg
+            size_hint_x: None
+            width: 40
+            font_size: 40
+
+        BGLabel:
+            text: root.awayscore
+            bgcolour: root.awaybg
+            size_hint_x: None
+            width: 40
+            font_size: 40
+
+        BGLabel:
+            text: root.awayteam
+            halign: "left"
+            font_size: 40
+
+    Label:
+        text: root.matchtime
+        font_size: 15
+        valign: "top"
+        size_hint_y: 0.1
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: 0.5
+        spacing: 5
+        valign: "top"
+
+        BGLabel:
+            text: root.homescorers
+            halign: "right"
+
+        BGLabel:
+            size_hint_x: None
+            width: 60
+
+        BGLabel:
+            size_hint_x: None
+            width: 60
+
+        BGLabel:
+            text: root.awayscorers
+            halign: "left"
+
+<Incident>
+    orientation: "horizontal"
+    size_hint: None, None
+    size: 350, 20
+
+    Label:
+        #text: "A" if not root.home else ""
+        size_hint_x: 0.1
+
+    Label:
+        text: root.player
+        halign: "right" if root.home else "left"
+
+    Label:
+        #text: "H" if root.home else ""
+        size_hint_x: 0.1
+
+<Spacer>
+    text: str(root.height)
+
+<FootballErrorScreen>
+    Label:
+        text: root.errormessage
+
+# <FillerWidget>
+#     height: 42
+#     orientation: "vertical"
+#
+#     BoxLayout:
+#         orientation: "horizontal"
+#         size_hint_y: 0.7
+#
+#         Label:
+#             text: "<-"
+#
+#         Label:
+#             text: root.lb
+#             size_hint_x: 0.9
+#
+#         Label:
+#             text: "->"
+#
+#     Label:
+#         text: "-----------"
+#
+# <TopLayer>
+#     size_hint: None, None
+#     size: 400, 200
+#     pos: 200, 140
+#
+#     text: "This should be on top"
+#     font_size: 40
+#
+#     canvas.before:
+#         Color:
+#             rgba: 1,0,0,1
+#         Rectangle:
+#             size: self.size
+#             pos: self.pos

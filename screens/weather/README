@@ -1,0 +1,26 @@
+Weather forecast
+----------------
+
+API Key:
+
+This plugin requires you to register for an API ley from weatherunderground.
+
+   See: http://www.wunderground.com/weather/api
+
+As the screen displays hourly data, you'll need a "Cumulus" or "Anvill" plan key. These should be free if you keep your requests low (and for this reason the screen should only poll once every hour).
+
+
+Configuring locations:
+
+There's a number of ways to set up locations. Have a look at the "query" section on this page:
+
+  http://www.wunderground.com/weather/api/d/docs?d=data/index
+
+Any of those formats can be entered into the "address" part of the config file.
+
+
+Known issues:
+-------------
+
+- Images flashing
+- Layout is a bit rubbish!

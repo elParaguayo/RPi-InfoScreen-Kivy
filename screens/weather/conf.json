@@ -1,0 +1,15 @@
+{
+    "screen": "WeatherScreen",
+    "kv": "weather.kv",
+    "enabled": true,
+    "dependencies": ["requests"],
+    "params": {
+        "key": "YOUR_API_KEY_HERE",
+        "locations": [
+            {"name": "London",
+             "address": "UK/London.json"},
+            {"name": "Current location",
+             "address": "autoip.json"}
+         ]
+    }
+}

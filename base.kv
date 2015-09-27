@@ -1,0 +1,29 @@
+#:kivy 1.0.9
+<InfoScreen>
+    id: iscreen
+
+    ScreenManager:
+        id: iscreenmgr
+        auto_bring_to_front: False
+
+    HiddenButton:
+        id: btn_left
+        size: 50, root.height
+        size_hint: None, None
+        pos: root.width - 50, 0
+        on_press: root.next_screen()
+
+    HiddenButton:
+        size: 50, root.height
+        size_hint: None, None
+        pos: 0, 0
+        on_press: root.next_screen(True)
+
+<BGLabel>
+    padding: 2, 2
+    canvas.before:
+        Color:
+            rgba: self.bgcolour
+        Rectangle:
+            size: self.size
+            pos: self.pos

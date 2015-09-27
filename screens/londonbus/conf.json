@@ -1,0 +1,14 @@
+{
+    "screen": "LondonBusScreen",
+    "kv": "londonbus.kv",
+    "enabled": true,
+    "dependencies": ["requests"],
+    "params": {
+        "stops": [
+            {"description": "Marble Arch",
+             "stopid": 77064},
+            {"description": "Waterloo Road",
+             "stopid": 76884}
+        ]
+    }
+}

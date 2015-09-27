@@ -1,0 +1,16 @@
+{
+    "screen": "TrainScreen",
+    "kv": "trains.kv",
+    "enabled": true,
+    "dependencies": ["requests", "BeautifulSoup"],
+    "params": {
+        "journeys": [
+            {"description": "London Victoria to Clapham Junction",
+             "from": "VIC",
+             "to": "CLJ"},
+             {"description": "London Kings Cross to Edinburgh",
+              "from": "WAT",
+              "to": "EDB"}
+        ]
+    }
+}

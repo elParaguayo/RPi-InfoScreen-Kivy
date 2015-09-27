@@ -1,0 +1,255 @@
+<Label>:
+    text_size: self.size
+    valign: "middle"
+    halign: "center"
+
+<TubeScreen>:
+    FloatLayout:
+        id: tubefloat
+
+        BoxLayout:
+            orientation: "vertical"
+
+            BGLabel:
+                size_hint_y: 0.7
+                font_size: 20
+                text: "Live London Travel Status"
+                bgcolour: 65/255., 75/255., 86/255., 1
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "Bakerloo"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["BAK"]["text"]
+                    bgcolour: root.tube["colours"]["BAK"]["background"]
+
+                BGLabelButton:
+                    id: lbl_bakerloo
+                    text: str(root.tube["BAK"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("BAK")
+
+                BGLabel:
+                    text: "Northern"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["NOR"]["text"]
+                    bgcolour: root.tube["colours"]["NOR"]["background"]
+
+                BGLabelButton:
+                    id: lbl_northern
+                    text: str(root.tube["NOR"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("NOR")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "Central"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["CEN"]["text"]
+                    bgcolour: root.tube["colours"]["CEN"]["background"]
+
+                BGLabelButton:
+                    id: lbl_central
+                    text: str(root.tube["CEN"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("CEN")
+
+                BGLabel:
+                    text: "Piccadilly"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["PIC"]["text"]
+                    bgcolour: root.tube["colours"]["PIC"]["background"]
+
+                BGLabelButton:
+                    id: lbl_piccadilly
+                    text: str(root.tube["PIC"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("PIC")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "Circle"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["CIR"]["text"]
+                    bgcolour: root.tube["colours"]["CIR"]["background"]
+
+                BGLabelButton:
+                    id: lbl_circle
+                    text: str(root.tube["CIR"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("CIR")
+
+                BGLabel:
+                    text: "Victoria"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["VIC"]["text"]
+                    bgcolour: root.tube["colours"]["VIC"]["background"]
+
+                BGLabelButton:
+                    id: lbl_victoria
+                    text: str(root.tube["VIC"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("VIC")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "District"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["DIS"]["text"]
+                    bgcolour: root.tube["colours"]["DIS"]["background"]
+
+                BGLabelButton:
+                    id: lbl_district
+                    text: str(root.tube["DIS"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("DIS")
+
+                BGLabel:
+                    text: "Waterloo & City"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["WAT"]["text"]
+                    bgcolour: root.tube["colours"]["WAT"]["background"]
+
+                BGLabelButton:
+                    id: lbl_waterloo
+                    text: str(root.tube["WAT"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("WAT")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "H'smith & City"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["HAM"]["text"]
+                    bgcolour: root.tube["colours"]["HAM"]["background"]
+
+                BGLabelButton:
+                    id: lbl_hammersmith
+                    text: str(root.tube["HAM"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("HAM")
+
+                BGLabel:
+                    text: "Overground"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["OVE"]["text"]
+                    bgcolour: root.tube["colours"]["OVE"]["background"]
+
+                BGLabelButton:
+                    id: lbl_overground
+                    text: str(root.tube["OVE"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("OVE")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "Jubilee"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["JUB"]["text"]
+                    bgcolour: root.tube["colours"]["JUB"]["background"]
+
+                BGLabelButton:
+                    id: lbl_jubilee
+                    text: str(root.tube["JUB"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("JUB")
+
+                BGLabel:
+                    text: "TfL Rail"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["TFL"]["text"]
+                    bgcolour: root.tube["colours"]["TFL"]["background"]
+
+                BGLabelButton:
+                    id: lbl_rail
+                    text: str(root.tube["TFL"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("TFL")
+
+            BoxLayout:
+                orientation: "horizontal"
+
+                BGLabel:
+                    text: "Metropolitan"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["MET"]["text"]
+                    bgcolour: root.tube["colours"]["MET"]["background"]
+
+                BGLabelButton:
+                    id: lbl_metropolitan
+                    text: str(root.tube["MET"])
+                    size_hint: 0.35, 1
+                    bgcolour: [.2, .2, .2, 1]
+                    on_press: root.show_info("MET")
+
+                BGLabel:
+                    text: "DLR"
+                    size_hint: 0.15, 1
+                    color: root.tube["colours"]["DLR"]["text"]
+                    bgcolour: root.tube["colours"]["DLR"]["background"]
+
+                BGLabelButton:
+                    id: lbl_dlr
+                    text: str(root.tube["DLR"])
+                    size_hint: 0.35, 1
+                    bgcolour: .2, .2, .2, 1
+                    on_press: root.show_info("DLR")
+
+            BGLabel:
+                size_hint_y: 0.5
+                text: "[i]{}[/i]".format(root.tube["update"])
+                markup: True
+                halign: "right"
+                padding_x: 5
+                font_size: 10
+
+<TubeDetail>
+    id: tube_detail_info
+
+    size: 400, 150
+    size_hint: None, None
+    center: 400, 240
+    orientation: "vertical"
+
+    canvas.before:
+        Color:
+            rgb: 134/255.,143/255.,152/255.
+        Rectangle:
+            size: 410, 160
+            pos: 195, 160
+
+    BGLabelButton:
+        text: root.line
+        bgcolour: root.bg
+        color: root.fg
+        size_hint_y: 0.2
+        on_press: root.parent.remove_widget(root)
+
+    BGLabelButton:
+        text: root.detail
+        bgcolour: .2,.2,.2,1
+        on_press: root.parent.remove_widget(root)

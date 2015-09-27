@@ -1,0 +1,16 @@
+London Bus Arrivals
+-------------------
+
+Update the "params" section of the conf.json file to include the desired bus stops.
+
+Each entry in the "stops" section is a dictionary containing two entries:
+    "description" - Your name for the bus stop
+    "stopid" - the 5-digit identifier for the bus stop
+
+You can find the identifer codes on the TfL website.
+
+Navigate to:
+
+        http://countdown.tfl.gov.uk
+
+Search for the area you want, click on the bus stop and the 5 digit code will be shown beneath the map.

@@ -1,0 +1,63 @@
+<TrainScreen>
+    FloatLayout:
+        id: train_float
+
+        BoxLayout:
+            id: train_base_box
+            Label:
+                id: football_lbl_load
+                text: "Loading journeys..."
+
+        ScreenManager:
+            id: train_scrmgr
+            auto_bring_to_front: False
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, root.height - 50
+            on_press: root.next_screen()
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, 0
+            on_press: root.next_screen(False)
+
+<TrainJourney>
+    Label:
+        id: load_label
+        text: root.desc
+
+<TrainDetail>
+    orientation: "horizontal"
+    size_hint: 1, None
+    height: 50
+    spacing: 5
+    padding: 2
+
+    BGLabel:
+        text: root.departing
+        bgcolour: root.bg
+
+    BGLabel:
+        text: root.arriving
+        bgcolour: root.bg
+
+    BGLabel:
+        text: root.duration
+        bgcolour: root.bg
+
+    BGLabel:
+        text: root.changes
+        bgcolour: root.bg
+
+    BGLabel:
+        text: root.status
+        bgcolour: root.bg
+        size_hint_x: None
+        width: 300
+
+    BGLabel:
+        text: root.platform
+        bgcolour: root.bg

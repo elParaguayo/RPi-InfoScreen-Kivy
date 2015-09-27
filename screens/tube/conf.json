@@ -1,0 +1,81 @@
+{
+    "screen": "TubeScreen",
+    "kv": "tube.kv",
+    "enabled": true,
+    "dependencies": ["requests"],
+    "params": {"colours":
+                {
+                  "Bakerloo":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#AE6118"
+                    },
+                  "Central":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#E41F1F"
+                    },
+                  "Circle":
+                    {
+                      "text": "#113892",
+                      "background": "#F8D42D"
+                    },
+                  "District":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#007229"
+                    },
+                  "Hammersmith and City":
+                    {
+                      "text": "#113892",
+                      "background": "#E899A8"
+                    },
+                  "Jubilee":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#686E72"
+                    },
+                  "Metropolitan":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#893267"
+                    },
+                  "Northern":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#000000"
+                    },
+                  "Piccadilly":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#0450A1"
+                    },
+                  "Victoria":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#009FE0"
+                    },
+                  "Waterloo and City":
+                    {
+                      "text": "#113892",
+                      "background": "#70C3CE"
+                    },
+                  "DLR":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#00BBB4"
+                    },
+                  "Overground":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#FF8866"
+                    },
+                  "TfL Rail":
+                    {
+                      "text": "#FFFFFF",
+                      "background": "#0450A1"
+                    }
+                }
+            }
+
+}

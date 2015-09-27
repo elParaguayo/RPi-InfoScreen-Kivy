@@ -1,0 +1,73 @@
+118996114	Premier League
+118996115	Championship
+118996116	League One
+118996117	League Two
+118996118	Football Conference
+118996118	National League
+118996176	Scottish Premiership
+118996177	Scottish Championship
+118996178	Scottish League One
+118996179	Scottish League Two
+118996207	Welsh Premier League
+118996238	Irish Premiership
+118996240	League of Ireland Premier
+118996307	Conference North
+118996307	National League North
+118996308	Conference South
+118996308	National League South
+118998036	FA Cup
+118998037	League Cup
+118998038	Football League Trophy
+118998039	FA Cup Qualifying
+118998041	The FA Trophy
+118998043	Irish Cup
+118998098	Scottish Cup
+118998099	Scottish League Cup
+118998100	Scottish Challenge Cup
+118998129	Welsh Cup
+118998132	FA Women's Cup
+118999031	Highland League
+118999958	Champions League
+118999989	Europa League
+119000051	Super Cup
+119000919	Austrian Bundesliga
+119000924	Belgian Pro League
+119000950	Danish Superliga
+119000955	Finnish Veikkausliiga
+119000981	French Ligue 1
+119000986	German Bundesliga
+119001012	Dutch Eredivisie
+119001017	Italian Serie A
+119001043	Norwegian Tippeligaen
+119001048	Portuguese Primeira Liga
+119001074	Spanish La Liga
+119001079	Swedish Allsvenskan
+119001105	Swiss Super League
+119001110	Turkish Super Lig
+119001136	Greek Superleague
+119001914	Africa Cup of Nations
+119001943	International Friendlies
+119001974	Under-21 Friendly
+119002004	Euro Under-21 Qualifying
+119002005	Euro Under-21 Championship
+119002036	European Championship Qualifying
+119003058	Women's World Cup
+119003064	Club World Cup
+119003989	Women's Super League
+119003997	Lowland League
+119004019	Women's Champions League
+999999983	Gold Cup
+999999984	Copa America
+999999987	Women's International Friendlies
+999999988	United States Major League Soccer
+999999989	Spanish Copa del Rey
+999999990	Russian Premier League
+999999991	Women's Premier North
+999999992	Women's Premier South
+999999993	Women's Super League 2
+999999994	Argentine Primera Division
+999999995	Australian A-League
+999999996	Brazilian Campeonato Série A
+999999997	French Coupe de France
+999999998	German DFB Cup
+999999999	Italian Coppa Italia

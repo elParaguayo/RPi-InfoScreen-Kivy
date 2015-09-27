@@ -1,0 +1,82 @@
+<WeatherScreen>
+    FloatLayout:
+        id: weather_float
+
+        BoxLayout:
+            id: weather_base_box
+            Label:
+                id: weather_lbl_load
+                text: "Loading weather..."
+
+        ScreenManager:
+            id: weather_scrmgr
+            auto_bring_to_front: False
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, root.height - 50
+            on_press: root.next_screen()
+
+        HiddenButton:
+            size: root.width, 50
+            size_hint: None, None
+            pos: 0, 0
+            on_press: root.next_screen(False)
+
+<WeatherSummary>
+    BoxLayout:
+        padding: 5, 5
+        orientation: "vertical"
+        Label:
+            text: root.location
+            size_hint_y: 0.2
+
+        BoxLayout:
+            padding: 2
+            id: bx_forecast
+            orientation: "horizontal"
+            size_hint_y: 0.4
+            spacing: 5
+
+        BoxLayout:
+            padding: 2
+            id: bx_hourly
+            orientation: "horizontal"
+            size_hint_y: 0.4
+            spacing: 5
+
+<WeatherForecastDay>
+    orientation: "vertical"
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size_hint_y: 0.4
+        orientation: "horizontal"
+
+        Label:
+            text: root.day
+            font_size: 18
+
+        AsyncImage:
+            source: root.icon_url
+    Label:
+        text: root.weather
+
+<WeatherForecastHourly>
+    width: 100
+    size_hint_x: None
+    orientation: "vertical"
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: root.weather

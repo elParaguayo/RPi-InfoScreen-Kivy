@@ -1,0 +1,10 @@
+UK Train Time Lookup
+--------------------
+
+Customise the plugin by adding the journeys you want.
+
+Format is as follows:
+
+    {"description": "Description of your journey",
+     "from": "3 letter station code for starting station",
+     "to": "3 letter station code for destination"}

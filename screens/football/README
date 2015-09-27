@@ -1,0 +1,22 @@
+Football Scores plugin
+----------------------
+
+This screen can display updates for individual teams or for leagues (including cup competitions). There is no limit on the number of teams/leagues you wish to include.
+
+Details of the available teams and league ids can be found in the appropriately titled files in this folder.
+
+You should amend the "params" section of the conf.json as required.
+
+For example:
+
+"params": {
+    "teams": ["Man City", "Chelsea"],
+    "leagues": ["118998037"]
+}
+
+Would provide team updates for Manchester City and Chelsea and show all League Cup scores.
+
+If you don't want updates for either teams or leagues, then the value should be set as an empty list e.g.
+
+    "teams": [],
+    "leagues": ["118998037"]
