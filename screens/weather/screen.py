@@ -78,6 +78,9 @@ class WeatherSummary(Screen):
 
         self.timer = Clock.schedule_once(self.getData, dt)
 
+    def on_leave(self):
+        Clock.unschedule(self.timer)
+
     def getData(self, *args):
         # Try to get the daily data but handle any failure to do so.
         try:
@@ -173,6 +176,20 @@ class WeatherScreen(Screen):
 
             # set the flag so we don't do this again.
             self.running = True
+
+        else:
+            # Fixes bug where nested screens don't have "on_enter" or
+            # "on_leave" methods called.
+            for c in self.scrmgr.children:
+                if c.name == self.scrmgr.current:
+                    c.on_enter()
+
+    def on_leave(self):
+        # Fixes bug where nested screens don't have "on_enter" or
+        # "on_leave" methods called.
+        for c in self.scrmgr.children:
+            if c.name == self.scrmgr.current:
+                c.on_leave()
 
     def buildURLs(self, location):
         return (self.forecast.format(key=self.key, location=location),

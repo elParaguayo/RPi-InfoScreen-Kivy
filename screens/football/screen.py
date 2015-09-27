@@ -548,6 +548,20 @@ class FootballScreen(Screen):
 
             self.running = True
 
+        else:
+            # Fixes bug where nested screens don't have "on_enter" or
+            # "on_leave" methods called.
+            for c in self.fscrmgr.children:
+                if c.name == self.fscrmgr.current:
+                    c.on_enter()
+
+    def on_leave(self):
+        # Fixes bug where nested screens don't have "on_enter" or
+        # "on_leave" methods called.
+        for c in self.fscrmgr.children:
+            if c.name == self.fscrmgr.current:
+                c.on_leave()
+
     def next_screen(self, rev=True):
         a = self.myscreens
         n = -1 if rev else 1
