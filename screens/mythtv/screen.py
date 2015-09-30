@@ -108,7 +108,7 @@ class MythTVScreen(Screen):
             st = r.starttime
             et = r.endtime
             rec["title"] = r.title
-            rec["subtitle"] = r.subtitle
+            rec["subtitle"] = r.subtitle if r.subtitle else ""
             day = dt.datetime(st.year, st.month, st.day)
             rec["day"] = (day - EPOCH).total_seconds()
             rec["time"] = "{} - {}".format(st.strftime("%H:%M"),
@@ -149,7 +149,6 @@ class MythTVScreen(Screen):
                     break
         except:
             # If we can't connect to it then it can't be recording.
-            print "OOPS"
             self.isrecording = False
 
     def drawScreen(self):
