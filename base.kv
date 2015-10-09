@@ -27,3 +27,17 @@
         Rectangle:
             size: self.size
             pos: self.pos
+
+<BGImage>
+    canvas.before:
+        Color:
+            rgba: self.bgcolour
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    canvas.after:
+        Color:
+            rgba: self.fgcolour
+        Rectangle:
+            size: self.size
+            pos: self.pos

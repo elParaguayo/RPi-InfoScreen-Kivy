@@ -1,0 +1,281 @@
+<SqueezePlayerItem>
+    orientation: "horizontal"
+    size: 385, 50
+    size_hint: None, None
+    spacing: 5
+
+    canvas.before:
+        Color:
+            rgba: [0, 0.7, 0.7, 0.5] if root.current else [0, 0, 0, 0.5]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    AsyncImage:
+        size_hint_x: None
+        width: 50
+        size: 46, 46
+        source: root.status
+
+    Label:
+        text: root.playername
+        size_hint_x: None
+        padding: 2, 2
+
+
+
+<SqueezePlaylistItem>
+    orientation: "horizontal"
+    size: 385, 50
+    size_hint: None, None
+    spacing: 5
+
+    canvas.before:
+        Color:
+            rgba: [0, 0.7, 0.7, 0.5] if root.current else [0, 0, 0, 0.5]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: root.posnum
+        size_hint_x: None
+        width: 20
+        padding: 2, 2
+
+    AsyncImage:
+        size_hint_x: None
+        width: 50
+        size: 46, 46
+        source: root.artwork
+
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            text: root.trackname
+            font_size: 12
+            halign: "left"
+            padding: 2, 2
+
+        Label:
+            text: root.artist
+            font_size: 12
+            halign: "left"
+            padding: 2, 2
+
+
+<SqueezePlayerScreen>
+
+    AsyncImage:
+        source: root.currentArt
+        size: 800, 800
+        y: -160
+        size_hint: None, None
+        allow_stretch: True
+        keep_ratio: False
+
+        canvas.after:
+            Color:
+                rgba: 0, 0, 0, 0.8
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+    BoxLayout:
+        id: squeeze_box
+        orientation: "vertical"
+
+        Label:
+            id: squeeze_load
+            text: "Squeezeplayer: searching for server..."
+
+<SqueezeNowPlaying>
+    sv_playlist: sq_playlist
+    sv_players_list: sq_players
+    playprog: sq_progress
+
+    orientation: "vertical"
+    size_hint_y: None
+    anim_duration: 1
+    anim_func: "out_back"
+    # height: 200
+
+    AccordionItem:
+        background_normal: "images/10x10_transparent.png"
+        background_selected: "images/10x10_transparent.png"
+        title: "Players"
+
+        ScrollView:
+            size_hint: 1, 1
+
+            StackLayout:
+                id: sq_players
+                orientation: "lr-tb"
+                size_hint: 1, None
+                height: self.minimum_height
+                spacing: 5
+                padding: 10, 5
+
+    AccordionItem:
+        title: "Now Playing"
+        background_normal: "images/10x10_transparent.png"
+        background_selected: "images/10x10_transparent.png"
+        BoxLayout:
+            orientation: "vertical"
+            Widget:
+                id: sq_space1
+
+            BoxLayout:
+                padding: 5, 5
+                size_hint_y: None
+                height: 200
+                spacing: 2
+
+                Widget:
+                    id: sq_space1
+                    width: 55
+                    size_hint_x: None
+
+                AsyncImage:
+                    id: squeeze_art
+                    size_hint_x: None
+                    size: 200, 200
+                    source: root.cur_track["art"]
+
+                BoxLayout:
+                    spacing: 2
+
+                    orientation: "vertical"
+
+                    # Widget:
+                    #     size_hint_y: 0.5
+
+                    BGLabel:
+                        bgcolour: 0, 0, 0, 0.5
+                        halign: "left"
+                        padding: 5, 2
+                        text: root.cur_track["name"]
+
+                    BGLabel:
+                        bgcolour: 0, 0, 0, 0.5
+                        halign: "left"
+                        padding: 5, 2
+                        text: root.cur_track["artist"]
+
+                    BGLabel:
+                        bgcolour: 0, 0, 0, 0.5
+                        halign: "left"
+                        padding: 5, 2
+                        text: root.cur_track["album"]
+
+                    BoxLayout:
+                        canvas.before:
+                            Color:
+                                rgba: 0, 0, 0, 0.5
+                            Rectangle:
+                                size: self.size
+                                pos: self.pos
+
+                        Label:
+                            halign: "right"
+                            padding: 5, 2
+                            text: root.playtime
+                            size_hint_x: 0.15
+
+                        ProgressBar:
+                            id: sq_progress
+                            max: 1
+
+                        Label:
+                            halign: "left"
+                            padding: 5, 2
+                            text: root.endtime
+                            size_hint_x: 0.15
+
+                    BoxLayout:
+                        orientation: "horizontal"
+                        height: 30
+                        size_hint_y: None
+                        spacing: 5
+
+                        BGImageButton:
+                            source: "{}/sq_previous.png".format(root.icon_path)
+                            bgcolour: 0, 0, 0, 0.5
+                            on_press: root.prev()
+
+                        BGImageButton:
+                            source: "{}/sq_play.png".format(root.icon_path)
+                            bgcolour: 0, 0, 0, 0.5
+                            on_press: root.play()
+
+                        BGImageButton:
+                            source: "{}/sq_stop.png".format(root.icon_path)
+                            bgcolour: 0, 0, 0, 0.5
+                            on_press: root.stop()
+
+                        BGImageButton:
+                            source: "{}/sq_next.png".format(root.icon_path)
+                            bgcolour: 0, 0, 0, 0.5
+                            on_press: root.next()
+
+                        BGImageButton:
+                            source: "{}/sq_volume.png".format(root.icon_path)
+                            bgcolour: 0, 0, 0, 0.5
+
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_x: None
+                    width: 30
+                    padding: 5, 5
+                    spacing: 2
+
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 0, 0.5
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+
+                    Slider:
+                        orientation: "vertical"
+                        min: 0
+                        max: 100
+                        value: root.vol
+                        on_touch_up: root.vol_change(self.value)
+
+                Widget:
+                    width: 55
+                    size_hint_x: None
+
+
+
+            Widget:
+                id: sq_space1
+
+    AccordionItem:
+        background_normal: "images/10x10_transparent.png"
+        background_selected: "images/10x10_transparent.png"
+        title: "Playlist"
+        collapse: True
+
+        ScrollView:
+            size_hint: 1, 1
+
+
+            StackLayout:
+                id: sq_playlist
+                orientation: "lr-tb"
+                size_hint: 1, None
+                height: self.minimum_height
+                spacing: 5
+                padding: 10, 5
+        # Label:
+        #     text: "Playlist"
+        #     text_size: self.height, None
+
+    # Label:
+    #     text: root.cur_track["artist"]
+    #
+    # Label:
+    #     text: root.cur_track["album"]
