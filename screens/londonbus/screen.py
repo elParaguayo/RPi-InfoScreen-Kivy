@@ -6,7 +6,9 @@ from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import Screen
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.boxlayout import
+from kivy.uix.stacklayout import StackLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.properties import StringProperty, DictProperty
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
