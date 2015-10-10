@@ -2,5 +2,8 @@
     "screen": "WordClockScreen",
     "kv": "wordclock.kv",
     "dependencies": [],
-    "enabled": true
+    "enabled": true,
+    "params": {
+        "language": "english"
+    }
 }

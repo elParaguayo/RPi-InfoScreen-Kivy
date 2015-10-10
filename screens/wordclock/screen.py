@@ -1,105 +1,154 @@
-from time import sleep
+import imp
+import os
+import sys
 from datetime import datetime as DT
+
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.properties import BooleanProperty, StringProperty, ListProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 
-layout = ("ITQISHCUBMWLRPI"
-          "AOQUARTERFDHALF"
-          "TWENTYSFIVEGTEN"
-          "TOXPASTNYTWELVE"
-          "ONESIXTHREENINE"
-          "FOURWTWOXELEVEN"
-          "EIGHTOSEVENFIVE"
-          "TENO'CLOCKHAMPM")
-
-display = {
-    "all": [0, 1, 3, 4],
-    "m00": [108, 109, 110, 111, 112,	113, 114],
-    "m05": [37,	38,	39,	40,	48, 49, 50, 51],
-    "m10": [42,	43,	44,	48, 49,	50,	51],
-    "m15": [15,	17,	18,	19,	20,	21,	22,	23,	48, 49, 50, 51],
-    "m20": [30,	31,	32,	33,	34,	35,	48, 49, 50, 51],
-    "m25": [30,	31,	32,	33,	34,	35,	37,	38,	39,	40,	48, 49, 50, 51],
-    "m30": [26,	27,	28,	29, 48, 49, 50, 51],
-    "m35": [30,	31,	32,	33,	34,	35,	37,	38,	39,	40,	45,	46],
-    "m40": [30,	31,	32,	33,	34,	35,	45,	46],
-    "m45": [15,	17,	18,	19,	20,	21,	22,	23,	45,	46],
-    "m50": [42,	43,	44,	45,	46],
-    "m55": [37,	38,	39,	40,	45,	46],
-    "h01": [60,	61,	62],
-    "h02": [80,	81,	82],
-    "h03": [66,	67,	68,	69,	70],
-    "h04": [75,	76,	77,	78],
-    "h05": [101, 102, 103, 104],
-    "h06": [63,	64,	65],
-    "h07": [96,	97,	98,	99,	100],
-    "h08": [90,	91,	92,	93,	94],
-    "h09": [71,	72,	73,	74],
-    "h10": [105, 106, 107],
-    "h11": [84,	85,	86,	87,	88,	89],
-    "h12": [54,	55,	56,	57,	58,	59],
-    "am":  [116, 117],
-    "pm":  [118, 119]
-    }
 
 def round_down(num, divisor):
-    return num - (num%divisor)
+    return num - (num % divisor)
+
 
 class WordClockLetter(Label):
+    """Word clock letter object. The colour of the letter is changed by calling
+       the "toggle" method.
+    """
     textcol = ListProperty([0.15, 0.15, 0.15, 1])
 
     def __init__(self, **kwargs):
         super(WordClockLetter, self).__init__(**kwargs)
 
+        # Flag for determining whether the state of the letter has changed
+        self.oldstate = False
+
+        # Variable for the duration of the animated fade
+        self.fadetime = 1
+
     def toggle(self, on):
         if on:
-            self.textcol = [0, 0.8, 0.8, 1]
+            colour = [0, 0.8, 0.8, 1]
         else:
-            self.textcol = [0.15, 0.15, 0.15, 1]
+            colour = [0.15, 0.15, 0.15, 1]
+
+        # Add some animation effect to fade between different times.
+        if on != self.oldstate:
+            self.oldstate = on
+            anim = Animation(textcol=colour, duration=self.fadetime)
+            anim.start(self)
+
 
 class WordClockScreen(Screen):
     def __init__(self, **kwargs):
         super(WordClockScreen, self).__init__(**kwargs)
         self.running = False
         self.timer = None
+        self.oldtime = None
+
+        # Set up some variables to help load the chosen layout.
+        self.basepath = os.path.dirname(os.path.abspath(__file__))
+        self.layouts = os.path.join(self.basepath, "layouts")
+        self.lang = kwargs["params"]["language"]
 
     def on_enter(self):
+        # We only want to set up the screen once
         if not self.running:
             self.setup()
+            self.running = True
+
+        # Set the interval timer
         self.timer = Clock.schedule_interval(self.update, 1)
 
     def on_leave(self):
         Clock.unschedule(self.timer)
 
     def update(self, *args):
+        # What time is it?
         nw = DT.now()
         hour = nw.hour
-        if hour > 12:
-            hour -= 12
-        elif hour == 0:
-            hour = 1
+        minute = round_down(nw.minute, 5)
 
-        ampm = "am" if nw.hour < 12 else "pm"
+        # Convert rounded time to string
+        tm = "{:02d}:{:02d}".format(hour, minute)
 
-        h = "h{:02d}".format(hour)
-        m = "m{:02d}".format(round_down(nw.minute, 5))
-        d = display
-        tm = d["all"] + d[h] + d[m] + d[ampm]
-        st = [x in tm for x in range(120)]
-        updt = zip(self.letters, st)
-        for z in updt:
-            z[0].toggle(z[1])
+        # If it's the same as the last update then we don't need to do anything
+        if tm != self.oldtime:
+
+            # Change to 12 hour clock
+            if hour > 12:
+                hour -= 12
+            elif hour == 0:
+                hour = 1
+
+            # Morning or afternoon?
+            ampm = "am" if nw.hour < 12 else "pm"
+
+            # Get necessary key names
+            h = "h{:02d}".format(hour)
+            m = "m{:02d}".format(minute)
+
+            # Load the map
+            d = self.config.MAP
+
+            # Build list of the letters we need
+            tm = d.get("all", []) + d[h] + d[m] + d.get(ampm, [])
+
+            # Build a map of all letters saying whether they're on or off
+            st = [x in tm for x in range(120)]
+
+            # Create a list of tuples of (letter, state)
+            updt = zip(self.letters, st)
+
+            # Loop over the list and toggle the letter
+            for z in updt:
+                z[0].toggle(z[1])
+
+    def loadLayout(self):
+        """Simple method to import the layout. If the module can't be found
+           then it defaults to loading the English layout.
+        """
+        module = os.path.join(self.layouts, "{}.py".format(self.lang))
+
+        try:
+            config = imp.load_source("layouts.{}".format(self.lang), module)
+
+        except ImportError:
+            self.lang = "english"
+            config = imp.load_source("layouts.{}".format(self.lang), module)
+
+        return config
 
     def setup(self):
+        # Get the layout
+        self.config = self.loadLayout()
+
+        # We'll want to keep a list of all the letter objects
         self.letters = []
-        grid = GridLayout(cols=15)
-        for ltr in layout:
-            word = WordClockLetter(text=ltr)
+
+        # Create a grid layout that's the right size
+        grid = GridLayout(cols=self.config.COLS)
+
+        # Loop over the letters
+        for ltr in self.config.LAYOUT:
+
+            # Create a letter object
+            word = WordClockLetter(text=ltr,
+                                   size=self.config.SIZE,
+                                   font_size=self.config.FONTSIZE)
+
+            # add it to our list...
             grid.add_widget(word)
+
+            # ...and to the grid layout
             self.letters.append(word)
 
+        # Clear the screen
         self.clear_widgets()
+
+        # add the clock layout
         self.add_widget(grid)
