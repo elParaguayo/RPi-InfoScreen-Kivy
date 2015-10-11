@@ -73,6 +73,11 @@ class WordClockScreen(Screen):
         hour = nw.hour
         minute = round_down(nw.minute, 5)
 
+        # Is our language one where we need to increment the hour after 30 mins
+        # e.g. 9:40 is "Twenty to ten"
+        if self.config.HOUR_INCREMENT and (minute > 30):
+            hour += 1
+
         # Convert rounded time to string
         tm = "{:02d}:{:02d}".format(hour, minute)
 
@@ -80,7 +85,9 @@ class WordClockScreen(Screen):
         if tm != self.oldtime:
 
             # Change to 12 hour clock
-            if hour > 12:
+            if hour == 24:
+                hour = 0
+            elif hour > 12:
                 hour -= 12
             elif hour == 0:
                 hour = 1
