@@ -93,6 +93,7 @@
 <SqueezeNowPlaying>
     sv_playlist: sq_playlist
     sv_players_list: sq_players
+    sqbtn_pause: sqbtn_pause
     playprog: sq_progress
 
     orientation: "vertical"
@@ -205,9 +206,10 @@
                             on_press: root.prev()
 
                         BGImageButton:
-                            source: "{}/sq_play.png".format(root.icon_path)
+                            id: sqbtn_pause
+                            source: "{}/{}".format(root.icon_path, root.pause_icon)
                             bgcolour: 0, 0, 0, 0.5
-                            on_press: root.play()
+                            on_press: root.toggle()
 
                         BGImageButton:
                             source: "{}/sq_stop.png".format(root.icon_path)

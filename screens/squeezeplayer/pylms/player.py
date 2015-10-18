@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 class Player(object):
-
     """
     Player
     """
@@ -72,17 +71,14 @@ class Player(object):
 
     def request(self, command_string, preserve_encoding=False):
         """Executes Telnet Request via Server"""
-        return self.server.request("%s %s" % (self.ref, command_string), preserve_encoding)
+        return self.server.request(
+            "%s %s" % (self.ref, command_string), preserve_encoding)
 
     def update(self, index, update=True):
         """Update Player Properties from Server"""
         self.index = index
-        self.ref = str(self.__unquote(
-            self.server.request("player id %i ?" % index)
-        ))
-        self.name = str(self.__unquote(
-            self.server.request("player name %i ?" % index)
-        ))
+        self.ref = self.server.request("player id %i ?" % index)
+        self.name = self.server.request("player name %i ?" % index)
         if update:
             self.uuid = str(self.__unquote(
                 self.server.request("player uuid %i ?" % index)
@@ -164,8 +160,8 @@ class Player(object):
             pref_string += namespace + ":"
         pref_string += name
         value = self.__quote(value)
-        valid = self.request("playerpref validate %s %s" %
-            (pref_string, value))
+        valid = self.request(
+            "playerpref validate %s %s" % (pref_string, value))
         if "valid:1" in valid:
             self.request("playerpref %s %s" % (pref_string, value))
             return True
@@ -263,17 +259,17 @@ class Player(object):
 
     def get_track_artist(self):
         """Get Players Current Track Artist"""
-        self.track_artist = str(self.request("artist ?"))
+        self.track_artist = self.request("artist ?")
         return self.track_artist
 
     def get_track_album(self):
         """Get Players Current Track Album"""
-        self.track_album = str(self.request("album ?"))
+        self.track_album = self.request("album ?")
         return self.track_album
 
     def get_track_title(self):
         """Get Players Current Track Title"""
-        self.track_title = str(self.request("title ?"))
+        self.track_title = self.request("title ?")
         return self.track_title
 
     def get_track_duration(self):
@@ -289,7 +285,7 @@ class Player(object):
 
     def get_track_current_title(self):
         """Get Players Current Track Current Title"""
-        self.track_current_title = str(self.request("current_title ?"))
+        self.track_current_title = self.request("current_title ?")
         return self.track_current_title
 
     def get_track_path(self):
@@ -336,7 +332,8 @@ class Player(object):
         return int(self.request('playlist tracks ?'))
 
     def playlist_play_index(self, index):
-        """Play track at a certain position in the current playlist (index is zero-based)"""
+        """Play track at a certain position in the current playlist
+        (index is zero-based)"""
         return self.request('playlist index %i' % index)
 
     def playlist_get_position(self):
@@ -350,7 +347,8 @@ class Player(object):
         encoded_list = response.split('playlist%20index')[1:]
         playlist = []
         for encoded in encoded_list:
-            data = [self.__unquote(x) for x in ('position' + encoded).split(' ')]
+            data = [self.__unquote(x) for x in
+                    ('position' + encoded).split(' ')]
             item = {}
             for info in data:
                 info = info.split(':')
@@ -365,28 +363,31 @@ class Player(object):
 
     # actions
 
-    def show(self, line1="",
-                   line2="",
-                   duration=3,
-                   brightness=4,
-                   font="standard",
-                   centered=False):
+    def show(
+            self,
+            line1="",
+            line2="",
+            duration=3,
+            brightness=4,
+            font="standard",
+            centered=False):
         """Displays text on Player display"""
         if font == "huge":
             line1 = ""
         line1, line2 = self.__quote(line1), self.__quote(line2)
         req_string = "show line1:%s line2:%s duration:%s "
         req_string += "brightness:%s font:%s centered:%i"
-        self.request(req_string %
-                     (line1, line2, str(duration), str(brightness), font, int(centered)))
+        self.request(
+            req_string % (line1, line2, str(duration), str(brightness),
+                          font, int(centered)))
 
-    def display(self, line1="",
-                      line2="",
-                      duration=3):
+    def display(self,
+                line1="",
+                line2="",
+                duration=3):
         line1, line2 = self.__quote(line1), self.__quote(line2)
         req_string = "display %s %s %s"
-        self.request(req_string %
-                     (line1, line2, str(duration)))
+        self.request(req_string % (line1, line2, str(duration)))
 
     def play(self):
         """Play"""
