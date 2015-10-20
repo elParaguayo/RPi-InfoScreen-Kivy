@@ -340,10 +340,11 @@ class Player(object):
         """Get the position of the current track in the playlist"""
         return self.request('playlist index ?')
 
-    def playlist_get_info(self):
+    def playlist_get_info(self, taglist=None):
         """Get info about the tracks in the current playlist"""
         amount = self.playlist_track_count()
-        response = self.request('status 0 %i' % amount, True)
+        tags = " tags:{}".format(",".join(taglist)) if taglist else ""
+        response = self.request('status 0 %i %s' % (amount, tags), True)
         encoded_list = response.split('playlist%20index')[1:]
         playlist = []
         for encoded in encoded_list:
@@ -355,9 +356,21 @@ class Player(object):
                 key = info.pop(0)
                 if key:
                     item[key] = ':'.join(info)
-            item['position'] = int(item['position'])
-            item['id'] = int(item['id'])
-            item['duration'] = float(item['duration'])
+            try:
+                item['position'] = int(item['position'])
+            except KeyError:
+                pass
+
+            try:
+                item['id'] = int(item['id'])
+            except KeyError:
+                pass
+
+            try:
+                item['duration'] = float(item['duration'])
+            except KeyError:
+                pass
+                
             playlist.append(item)
         return playlist
 
