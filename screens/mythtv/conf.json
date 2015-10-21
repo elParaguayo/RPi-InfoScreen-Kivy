@@ -1,0 +1,6 @@
+{
+    "screen": "MythTVScreen",
+    "kv": "mythtv.kv",
+    "dependencies": ["MythTV", "MySQLdb", "lxml"],
+    "enabled": true
+}
