@@ -6,6 +6,7 @@ from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.properties import StringProperty, ListProperty
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
