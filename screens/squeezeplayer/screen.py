@@ -10,6 +10,7 @@ from kivy.properties import (StringProperty,
                              BoundedNumericProperty)
 from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
@@ -394,8 +395,9 @@ class SqueezePlayerScreen(Screen):
         if player != self.cur_player:
             self.cur_player = player
             self.squeezePlayer = self.getPlayer(self.cur_player)
-            self.track_changed()
+            self.now_playing.player = self.squeezePlayer
             self.playlist_changed()
+            self.track_changed()
             self.now_playing.update_players(self.squeezeplayers)
 
     def getSqueezePlayers(self, server):
