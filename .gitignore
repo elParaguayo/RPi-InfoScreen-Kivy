@@ -1,5 +1,7 @@
 # Custom scripts for local testing/building
 copyscores.sh
+copypylms.sh
+*.NOTES
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
