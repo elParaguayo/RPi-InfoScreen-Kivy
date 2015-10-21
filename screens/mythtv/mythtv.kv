@@ -1,0 +1,69 @@
+<MythRecordingHeader>
+    text: root.rec_date
+    height: 25
+    size_hint_y: None
+    halign: "left"
+    padding: 10, 5
+
+<MythRecording>
+    orientation: "horizontal"
+    height: max(mrec_desc.texture_size[1], mrec_time.texture_size[1], mrec_title.texture_size[1])
+    size_hint_y: None
+
+    BGLabel:
+        id: mrec_time
+        size_hint: 0.2, None
+        text_size: self.width, None
+        height: max(self.texture_size[1], mrec_title.texture_size[1], mrec_desc.texture_size[1])
+        text: root.rec["time"]
+        bgcolour: root.bg
+        padding: (2, 2)
+
+    BGLabel:
+        id: mrec_title
+        size_hint: 0.3, None
+        text_size: self.width, None
+        height: max(self.texture_size[1], mrec_time.texture_size[1], mrec_desc.texture_size[1])
+        text: "{}\n{}".format(root.rec["title"], root.rec["subtitle"])
+        halign: "left"
+        bgcolour: root.bg
+        padding: (2, 2)
+
+    BGLabel:
+        id: mrec_desc
+        text: root.rec["desc"]
+        size_hint: 0.5, None
+        text_size: self.width, None
+        height: max(self.texture_size[1], mrec_time.texture_size[1], mrec_title.texture_size[1])
+        halign: "left"
+        bgcolour: root.bg
+        padding: 10, 10
+
+<MythTVScreen>
+
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            size_hint_y: 0.15
+            text: "Upcoming TV Recordings"
+
+        ScrollView:
+            id: myth_scroll
+            size_hint: 1, 1
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.1
+
+            Label:
+                halign: "left"
+                text: "Backend is {}".format("online" if root.backendonline else "offline")
+                padding: 5, 0
+                font_size: 11
+
+            Label:
+                halign: "right"
+                text: "Recording" if root.isrecording else ""
+                padding: 5, 0
+                font_size: 11

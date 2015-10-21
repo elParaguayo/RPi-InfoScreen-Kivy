@@ -1,3 +1,15 @@
+v0.2 - Second Version
+Bugfixes for v0.1 screens
+
+New Screens:
+- MythTV upcoming recordings (disabled by default)
+- SqueezePlayer control (disabled by default)
+- Wordclock
+
+Known issues:
+- Those weather images are still flashing...
+
+
 v0.1 - First version
 
 Known issues:

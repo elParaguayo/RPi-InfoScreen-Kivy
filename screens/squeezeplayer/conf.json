@@ -1,0 +1,15 @@
+{
+    "screen": "SqueezePlayerScreen",
+    "kv": "squeezeplayer.kv",
+    "dependencies": [],
+    "enabled": false,
+    "params":
+    {
+        "host":
+        {
+            "address": "192.168.0.1",
+            "webport": 9000,
+            "telnetport": 9090
+        }
+    }
+}
