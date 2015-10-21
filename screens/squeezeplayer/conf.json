@@ -2,7 +2,7 @@
     "screen": "SqueezePlayerScreen",
     "kv": "squeezeplayer.kv",
     "dependencies": [],
-    "enabled": true,
+    "enabled": false,
     "params":
     {
         "host":
