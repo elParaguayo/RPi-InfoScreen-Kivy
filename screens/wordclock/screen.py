@@ -89,8 +89,9 @@ class WordClockScreen(Screen):
                 hour = 0
             elif hour > 12:
                 hour -= 12
-            elif hour == 0:
-                hour = 1
+
+            if hour == 0:
+                hour = 12
 
             # Morning or afternoon?
             ampm = "am" if nw.hour < 12 else "pm"
