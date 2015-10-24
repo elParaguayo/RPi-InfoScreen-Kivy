@@ -14,6 +14,10 @@ class ArtworkResolver(object):
         self.host = host
         self.port = port
 
+        # Custom plugins may use a different image format
+        # Set up some methods to handle them
+        self.methods = {"spotifyimage": self.__spotify_url}
+
         # Set up the template for local artwork
         self.localart = "http://{host}:{port}/music/{coverid}/cover.jpg"
 
@@ -34,6 +38,10 @@ class ArtworkResolver(object):
 
         # If there is, build the link.
         if art:
+            for k in self.methods:
+                if art.startswith(k):
+                    return self.methods[k](art)
+
             h, w = size
             data= {"h": h,
                    "w": w,
@@ -58,6 +66,14 @@ class ArtworkResolver(object):
         # If not, return the fallback image
         else:
             return self.default
+
+    def __spotify_url(self, art):
+        """Spotify images (using Triode's plugin) are provided on the local
+           server.
+        """
+        return "http://{host}:{port}/{art}".format(host=self.host,
+                                                   port=self.port,
+                                                   art=art)
 
     def getURL(self, track, size=(50, 50)):
         """Method for generating link to artwork for the selected track.
