@@ -1,3 +1,16 @@
+v0.2.1 - SqueezePlayer bugfixes
+
+Bug Fixes:
+https://github.com/elParaguayo/RPi-InfoScreen-Kivy/issues/30
+https://github.com/elParaguayo/RPi-InfoScreen-Kivy/issues/31
+https://github.com/elParaguayo/RPi-InfoScreen-Kivy/issues/32
+https://github.com/elParaguayo/RPi-InfoScreen-Kivy/issues/33
+https://github.com/elParaguayo/RPi-InfoScreen-Kivy/issues/34
+
+New:
+Blurred background on SqueezePlayer screen to make controls look sharper.
+
+
 v0.2 - Second Version
 Bugfixes for v0.1 screens
 

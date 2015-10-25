@@ -22,7 +22,7 @@ from core.getplugins import getPlugins
 # Set the current working directory
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
-VERSION = "0.2"
+VERSION = "0.2.1"
 
 
 class InfoScreenApp(App):
