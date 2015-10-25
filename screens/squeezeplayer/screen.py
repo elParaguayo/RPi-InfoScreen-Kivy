@@ -423,15 +423,28 @@ class SqueezePlayerScreen(Screen):
     def getCurrentTrackInfo(self, playlist, pos):
         """Method to update the current playing track info with extra info."""
         track = {}
-        track = playlist[pos]
-        track["pos"] = pos + 1
-        track["elapsed"] = self.squeezePlayer.get_time_elapsed()
 
-        # Get the artwork - get large version if possible...
-        track["art"] = self.awr.getURL(track, size=(800, 800))
+        # Need to check if there's a playlist, if not this would cause a crash
+        if playlist:
+            track = playlist[pos]
+            track["pos"] = pos + 1
+            track["elapsed"] = self.squeezePlayer.get_time_elapsed()
 
-        # ...as we'll use as background too
-        self.currentArt = track["art"]
+            # Get the artwork - get large version if possible...
+            track["art"] = self.awr.getURL(track, size=(800, 800))
+
+            # ...as we'll use as background too
+            self.currentArt = track["art"]
+
+        # No playlist so send some dummy info
+        else:
+            track = {"artist": "Playlist is empty",
+                     "album": "Playlist is empty",
+                     "title": "Playlist is empty",
+                     "elapsed": 0,
+                     "duration": 1,
+                     "art": "10x10_transparent.png",
+                     "pos": 0}
 
         return track
 
@@ -556,6 +569,16 @@ class SqueezePlayerScreen(Screen):
 
             # Update the screen
             self.now_playing.updatePlaylist(self.getCurrentPlaylist())
+
+            ev = event.split()
+            try:
+                if ev[2] == "clear":
+                    # We know there are no tracks.
+                    self.ct = self.getCurrentTrackInfo({}, 0)
+                    self.now_playing.update(self.ct)
+
+            except IndexError:
+                pass
 
     def track_changed(self, event=None):
         """Method to handle track change callback.

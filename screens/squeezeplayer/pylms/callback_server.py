@@ -25,12 +25,14 @@ class CallbackServer(Server, Thread):
     PLAYLIST_OPEN = "playlist open"
     PLAYLIST_CHANGE_TRACK = "playlist newsong"
     PLAYLIST_LOAD_TRACKS = "playlist loadtracks"
-    PLAYLIST_ADD_TRACKs = "playlist addtracks"
+    PLAYLIST_ADD_TRACKS = "playlist addtracks"
     PLAYLIST_LOADED = "playlist load_done"
     PLAYLIST_REMOVE = "playlist delete"
+    PLAYLIST_CLEAR = "playlist clear"
     PLAYLIST_CHANGED = [PLAYLIST_LOAD_TRACKS,
-                        PLAYLIST_ADD_TRACKs,
-                        PLAYLIST_REMOVE]
+                        PLAYLIST_ADD_TRACKS,
+                        PLAYLIST_REMOVE,
+                        PLAYLIST_CLEAR]
 
     CLIENT_ALL = "client"
     CLIENT_NEW = "client new"
