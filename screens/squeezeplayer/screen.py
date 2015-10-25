@@ -409,6 +409,7 @@ class SqueezePlayerScreen(Screen):
         self.timer = None
         self.cbs = None
         self.sync_groups = []
+        self.checker = None
 
     def on_enter(self):
         """Start the screen running."""
@@ -510,6 +511,12 @@ class SqueezePlayerScreen(Screen):
     def getCallbackPlayer(self, event):
         """Return the player reference from the callback event."""
         return self.cur_player if event is None else event.split(" ")[0]
+
+    def checkCallbackServer(self, *args):
+        """Checks if there's still a connection to the server and deletes
+           callback server instance if there isn't.
+        """
+        self.cbs.check_connection()
 
     def cur_or_sync(self, ref):
         """Method to determine if the event player is our player or in a sync
@@ -710,7 +717,12 @@ class SqueezePlayerScreen(Screen):
         """Method to return the playlist for the current player."""
         # Get the playlist and current position
         self.playlist = self.squeezePlayer.playlist_get_info(taglist=TAGLIST)
-        self.playlistposition = int(self.squeezePlayer.playlist_get_position())
+        try:
+            pos = int(self.squeezePlayer.playlist_get_position())
+        except ValueError:
+            pos = 0
+
+        self.playlistposition = pos
 
         # Combine into a dict
         plyl = {"pos": self.playlistposition,
@@ -772,6 +784,10 @@ class SqueezePlayerScreen(Screen):
                 # ...and start it running
                 self.cbs.start()
 
+                # Set up a timer to check if the server is active
+                check = self.checkCallbackServer
+                self.checker = Clock.schedule_interval(check, 5)
+
                 # If we don't have a Now Playing screen initialised
                 if not self.now_playing:
 
@@ -780,8 +796,8 @@ class SqueezePlayerScreen(Screen):
 
                     # We've got a callback server running so we don't need
                     # a regular interval now but we may want to test the
-                    # connection every 30 seconds or so
-                    interval = 30
+                    # connection every 15 seconds or so
+                    interval = 15
 
             else:
 
@@ -789,4 +805,20 @@ class SqueezePlayerScreen(Screen):
                 self.drawNoServer()
                 self.inactive = True
 
-        Clock.schedule_once(self.update, interval)
+        else:
+
+            # If the callback server has died (e.g. no connection)...
+            if not self.cbs.isAlive():
+
+                # Stop checking for the connection
+                Clock.unschedule(self.checker)
+
+                # Stop timers for now playing screen
+                if self.now_playing:
+                    self.now_playing.quit()
+
+                # Remove the callback server
+                del self.cbs
+                self.cbs = None
+
+        self.timer = Clock.schedule_once(self.update, interval)

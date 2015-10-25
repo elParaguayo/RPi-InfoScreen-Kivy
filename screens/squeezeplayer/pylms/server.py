@@ -71,7 +71,7 @@ class Server(object):
         """
         Telnet Connect
         """
-        self.telnet = telnetlib.Telnet(self.hostname, self.port)
+        self.telnet = telnetlib.Telnet(self.hostname, self.port, timeout=2)
 
     def login(self):
         """
@@ -86,7 +86,8 @@ class Server(object):
         """
         # self.logger.debug("Telnet: %s" % (command_string))
         self.telnet.write(self.__encode(command_string + "\n"))
-        response = self.telnet.read_until(self.__encode("\n"))[:-1]
+        # Include a timeout to stop unnecessary blocking
+        response = self.telnet.read_until(self.__encode("\n"),timeout=1)[:-1]
         if not preserve_encoding:
             response = self.__decode(self.__unquote(response))
         else:
