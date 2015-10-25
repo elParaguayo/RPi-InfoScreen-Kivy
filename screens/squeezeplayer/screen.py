@@ -446,6 +446,7 @@ class SqueezePlayerScreen(Screen):
         cbs.add_callback(cbs.PLAY_PAUSE, self.play_pause)
         cbs.add_callback(cbs.PLAYLIST_CHANGED, self.playlist_changed)
         cbs.add_callback(cbs.PLAYLIST_CHANGE_TRACK, self.track_changed)
+        cbs.add_callback(cbs.SYNC, self.sync_event)
 
         # Deamonise the object so it dies if the main program dies.
         cbs.daemon = True
@@ -578,6 +579,23 @@ class SqueezePlayerScreen(Screen):
 
             # Update the screen
             self.now_playing.update(self.ct)
+
+    def sync_event(self, event=None):
+        """Method to handle sync callback.
+
+           Expected event:
+             [player_ref] sync
+        """
+        self.now_playing.updatePlaylist(self.getCurrentPlaylist())
+        self.squeezeplayers = self.getSqueezePlayers(self.lms)
+        self.sync_groups = self.lms.get_sync_groups()
+        pos = int(self.squeezePlayer.playlist_get_position())
+        self.playlistposition = pos
+        plyl = {"pos": self.playlistposition,
+                "playlist": self.playlist}
+        self.ct = self.getCurrentTrackInfo(self.playlist,
+                                           self.playlistposition)
+        self.now_playing.update(self.ct)
 
     def drawNoServer(self):
         """Method to tell the user that there's no server."""
