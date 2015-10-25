@@ -1,3 +1,5 @@
+#: import ew kivy.uix.effectwidget
+
 <SqueezePlayerItem>
     orientation: "horizontal"
     size: 385, 50
@@ -67,20 +69,24 @@
 
 <SqueezePlayerScreen>
 
-    AsyncImage:
-        source: root.currentArt
-        size: 800, 800
-        y: -160
-        size_hint: None, None
-        allow_stretch: True
-        keep_ratio: False
+    EffectWidget:
 
-        canvas.after:
-            Color:
-                rgba: 0, 0, 0, 0.8
-            Rectangle:
-                size: self.size
-                pos: self.pos
+        effects: ew.HorizontalBlurEffect(size=10), ew.VerticalBlurEffect(size=10)
+
+        AsyncImage:
+            source: root.currentArt
+            size: 800, 800
+            y: -160
+            size_hint: None, None
+            allow_stretch: True
+            keep_ratio: False
+
+            canvas.after:
+                Color:
+                    rgba: 0, 0, 0, 0.8
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
 
     BoxLayout:
         id: squeeze_box
