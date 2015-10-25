@@ -8,7 +8,7 @@ object.
 """
 from threading import Thread
 from telnetlib import IAC, NOP
-import select
+import socket
 
 from pylms.server import Server
 
@@ -25,12 +25,15 @@ class CallbackServer(Server, Thread):
     PLAYLIST_OPEN = "playlist open"
     PLAYLIST_CHANGE_TRACK = "playlist newsong"
     PLAYLIST_LOAD_TRACKS = "playlist loadtracks"
-    PLAYLIST_ADD_TRACKs = "playlist addtracks"
+    PLAYLIST_ADD_TRACKS = "playlist addtracks"
     PLAYLIST_LOADED = "playlist load_done"
     PLAYLIST_REMOVE = "playlist delete"
+    PLAYLIST_CLEAR = "playlist clear"
     PLAYLIST_CHANGED = [PLAYLIST_LOAD_TRACKS,
-                        PLAYLIST_ADD_TRACKs,
-                        PLAYLIST_REMOVE]
+                        PLAYLIST_LOADED,
+                        PLAYLIST_ADD_TRACKS,
+                        PLAYLIST_REMOVE,
+                        PLAYLIST_CLEAR]
 
     CLIENT_ALL = "client"
     CLIENT_NEW = "client new"
@@ -44,6 +47,7 @@ class CallbackServer(Server, Thread):
         self.callbacks = {}
         self.notifications = []
         self.abort = False
+        self.ending = "\n".encode(self.charset)
 
     def add_callback(self, event, callback):
         """Add a callback.
@@ -92,20 +96,26 @@ class CallbackServer(Server, Thread):
                 break
 
     def check_connection(self):
-        # TO DO: Find a way of checking if server is unavailable
-        # Stopping the server triggers EOFError which can be caught, but
-        # suspending the server leaves the connection open.
+        """Method to check whether we can still connect to the server.
 
-        # I have no idea if this works yet!!
-        if self.telnet:
-            conn = self.telnet.sock
+           Sets the flag to stop the server if no collection is available.
+        """
+        # Create a socket object
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-            try:
-                ready_to_read, ready_to_write, in_error = \
-                      select.select([conn, ], [conn, ], [], 5)
+        # Set a timeout - we don't want this to block unnecessarily
+        s.settimeout(2)
 
-            except select.error:
-                self.abort = True
+        try:
+            # Try to connect
+            s.connect((self.hostname, self.port))
+
+        except socket.error:
+            # We can't connect so stop the server
+            self.abort = True
+
+        # Close our socket object
+        s.close()
 
     def run(self):
         self.connect()
@@ -122,7 +132,8 @@ class CallbackServer(Server, Thread):
 
         while not self.abort:
             try:
-                data = self.telnet.read_until("\n".encode(self.charset))[:-1]
+                # Include a timeout to stop blocking if no server
+                data = self.telnet.read_until(self.ending, timeout=1)[:-1]
 
                 # We've got a notification, so let's see if it's one we're
                 # watching.

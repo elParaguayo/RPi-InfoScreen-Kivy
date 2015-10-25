@@ -20,6 +20,7 @@ from kivy.uix.slider import Slider
 from kivy.uix.dropdown import DropDown
 
 from core.bgimage import BGImageButton
+from core.bglabel import BGLabelButton
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,15 +78,28 @@ class SqueezePlaylistItem(ButtonBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super(SqueezePlaylistItem, self).__init__(**kwargs)
-        # Set the display properties
-        self.artwork = kwargs["track"]["art"]
-        self.artist = kwargs["track"]["artist"]
-        self.trackname = kwargs["track"]["title"]
-        self.posnum = str(kwargs["track"]["pos"])
-
         # Create references to underlying objects
         self.player = kwargs["player"]
         self.np = kwargs["np"]
+
+        # Set the display properties
+        try:
+            self.artwork = kwargs["track"]["art"]
+            self.artist = kwargs["track"]["artist"]
+            self.trackname = kwargs["track"]["title"]
+            self.posnum = str(kwargs["track"]["pos"])
+
+        # Sometimes the server hasn't loaded all the metadata yet
+        except KeyError:
+
+            # Create a dummy entry in the playlist
+            self.artwork = "10x10_transparent.png"
+            self.artist = "Loading..."
+            self.trackname = "Loading..."
+            self.posnum = "0"
+
+            # but schedule a refresh of the playlist
+            Clock.schedule_once(self.np.refresh_playlist, 2)
 
         # Check if we're the current track
         self.updatePlaylistPosition(self.np.cur_track["pos"])
@@ -211,7 +225,13 @@ class SqueezeNowPlaying(Accordion):
         # sure the currently playing track is highlighted.
         if cur_track["pos"] != self.cur_track["pos"]:
             for c in self.sv_playlist.children:
-                c.updatePlaylistPosition(cur_track["pos"])
+
+                # This will raise an error when it tries to update the
+                # "Refresh" button, so let's make sure we catch it.
+                try:
+                    c.updatePlaylistPosition(cur_track["pos"])
+                except AttributeError:
+                    pass
 
         # Set the local flag (so we can check it later)
         self.cur_track = cur_track
@@ -269,6 +289,25 @@ class SqueezeNowPlaying(Accordion):
         self.endtime = "{0:.0f}:{1:02.0f}".format(dm, ds)
         self.playprog.value = pr
 
+    def btn_refresh_playlist(self):
+        """Creates a Refresh button for the playlist screen and binds it
+           to the refresh_playlist method.
+        """
+        btn = BGLabelButton(text="Refresh Playlist",
+                            size=(780,30),
+                            size_hint=(None, None),
+                            bgcolour=[0, 0, 0, 0.5])
+        btn.bind(on_press=self.refresh_playlist)
+
+        return btn
+
+    def refresh_playlist(self, *args):
+        """Requests a refresh of the playlist."""
+        # We need to fake an event for the current player.
+        event = "{} playlist".format(self.player.get_ref())
+        self.sq_root.playlist_changed(event)
+
+
     def updatePlaylist(self, pl):
         """Method to display playlist for current player."""
         # Get the playlist info
@@ -278,6 +317,8 @@ class SqueezeNowPlaying(Accordion):
 
         # Clear the playlist
         self.sv_playlist.clear_widgets()
+
+        self.sv_playlist.add_widget(self.btn_refresh_playlist())
 
         # Loop over the playlist
         for i, tr in enumerate(plyl):
@@ -368,6 +409,7 @@ class SqueezePlayerScreen(Screen):
         self.timer = None
         self.cbs = None
         self.sync_groups = []
+        self.checker = None
 
     def on_enter(self):
         """Start the screen running."""
@@ -423,15 +465,28 @@ class SqueezePlayerScreen(Screen):
     def getCurrentTrackInfo(self, playlist, pos):
         """Method to update the current playing track info with extra info."""
         track = {}
-        track = playlist[pos]
-        track["pos"] = pos + 1
-        track["elapsed"] = self.squeezePlayer.get_time_elapsed()
 
-        # Get the artwork - get large version if possible...
-        track["art"] = self.awr.getURL(track, size=(800, 800))
+        # Need to check if there's a playlist, if not this would cause a crash
+        if playlist:
+            track = playlist[pos]
+            track["pos"] = pos + 1
+            track["elapsed"] = self.squeezePlayer.get_time_elapsed()
 
-        # ...as we'll use as background too
-        self.currentArt = track["art"]
+            # Get the artwork - get large version if possible...
+            track["art"] = self.awr.getURL(track, size=(800, 800))
+
+            # ...as we'll use as background too
+            self.currentArt = track["art"]
+
+        # No playlist so send some dummy info
+        else:
+            track = {"artist": "Playlist is empty",
+                     "album": "Playlist is empty",
+                     "title": "Playlist is empty",
+                     "elapsed": 0,
+                     "duration": 1,
+                     "art": "10x10_transparent.png",
+                     "pos": 0}
 
         return track
 
@@ -446,6 +501,7 @@ class SqueezePlayerScreen(Screen):
         cbs.add_callback(cbs.PLAY_PAUSE, self.play_pause)
         cbs.add_callback(cbs.PLAYLIST_CHANGED, self.playlist_changed)
         cbs.add_callback(cbs.PLAYLIST_CHANGE_TRACK, self.track_changed)
+        cbs.add_callback(cbs.SYNC, self.sync_event)
 
         # Deamonise the object so it dies if the main program dies.
         cbs.daemon = True
@@ -455,6 +511,12 @@ class SqueezePlayerScreen(Screen):
     def getCallbackPlayer(self, event):
         """Return the player reference from the callback event."""
         return self.cur_player if event is None else event.split(" ")[0]
+
+    def checkCallbackServer(self, *args):
+        """Checks if there's still a connection to the server and deletes
+           callback server instance if there isn't.
+        """
+        self.cbs.check_connection()
 
     def cur_or_sync(self, ref):
         """Method to determine if the event player is our player or in a sync
@@ -556,6 +618,16 @@ class SqueezePlayerScreen(Screen):
             # Update the screen
             self.now_playing.updatePlaylist(self.getCurrentPlaylist())
 
+            try:
+                ev = event.split()
+                if ev[2] == "clear":
+                    # We know there are no tracks.
+                    self.ct = self.getCurrentTrackInfo({}, 0)
+                    self.now_playing.update(self.ct)
+
+            except (IndexError, AttributeError):
+                pass
+
     def track_changed(self, event=None):
         """Method to handle track change callback.
 
@@ -578,6 +650,23 @@ class SqueezePlayerScreen(Screen):
 
             # Update the screen
             self.now_playing.update(self.ct)
+
+    def sync_event(self, event=None):
+        """Method to handle sync callback.
+
+           Expected event:
+             [player_ref] sync
+        """
+        self.now_playing.updatePlaylist(self.getCurrentPlaylist())
+        self.squeezeplayers = self.getSqueezePlayers(self.lms)
+        self.sync_groups = self.lms.get_sync_groups()
+        pos = int(self.squeezePlayer.playlist_get_position())
+        self.playlistposition = pos
+        plyl = {"pos": self.playlistposition,
+                "playlist": self.playlist}
+        self.ct = self.getCurrentTrackInfo(self.playlist,
+                                           self.playlistposition)
+        self.now_playing.update(self.ct)
 
     def drawNoServer(self):
         """Method to tell the user that there's no server."""
@@ -628,7 +717,12 @@ class SqueezePlayerScreen(Screen):
         """Method to return the playlist for the current player."""
         # Get the playlist and current position
         self.playlist = self.squeezePlayer.playlist_get_info(taglist=TAGLIST)
-        self.playlistposition = int(self.squeezePlayer.playlist_get_position())
+        try:
+            pos = int(self.squeezePlayer.playlist_get_position())
+        except ValueError:
+            pos = 0
+
+        self.playlistposition = pos
 
         # Combine into a dict
         plyl = {"pos": self.playlistposition,
@@ -690,6 +784,10 @@ class SqueezePlayerScreen(Screen):
                 # ...and start it running
                 self.cbs.start()
 
+                # Set up a timer to check if the server is active
+                check = self.checkCallbackServer
+                self.checker = Clock.schedule_interval(check, 5)
+
                 # If we don't have a Now Playing screen initialised
                 if not self.now_playing:
 
@@ -698,8 +796,8 @@ class SqueezePlayerScreen(Screen):
 
                     # We've got a callback server running so we don't need
                     # a regular interval now but we may want to test the
-                    # connection every 30 seconds or so
-                    interval = 30
+                    # connection every 15 seconds or so
+                    interval = 15
 
             else:
 
@@ -707,4 +805,20 @@ class SqueezePlayerScreen(Screen):
                 self.drawNoServer()
                 self.inactive = True
 
-        Clock.schedule_once(self.update, interval)
+        else:
+
+            # If the callback server has died (e.g. no connection)...
+            if not self.cbs.isAlive():
+
+                # Stop checking for the connection
+                Clock.unschedule(self.checker)
+
+                # Stop timers for now playing screen
+                if self.now_playing:
+                    self.now_playing.quit()
+
+                # Remove the callback server
+                del self.cbs
+                self.cbs = None
+
+        self.timer = Clock.schedule_once(self.update, interval)
