@@ -570,14 +570,14 @@ class SqueezePlayerScreen(Screen):
             # Update the screen
             self.now_playing.updatePlaylist(self.getCurrentPlaylist())
 
-            ev = event.split()
             try:
+                ev = event.split()
                 if ev[2] == "clear":
                     # We know there are no tracks.
                     self.ct = self.getCurrentTrackInfo({}, 0)
                     self.now_playing.update(self.ct)
 
-            except IndexError:
+            except (IndexError, AttributeError):
                 pass
 
     def track_changed(self, event=None):
