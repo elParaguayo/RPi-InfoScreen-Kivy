@@ -30,6 +30,7 @@ class CallbackServer(Server, Thread):
     PLAYLIST_REMOVE = "playlist delete"
     PLAYLIST_CLEAR = "playlist clear"
     PLAYLIST_CHANGED = [PLAYLIST_LOAD_TRACKS,
+                        PLAYLIST_LOADED,
                         PLAYLIST_ADD_TRACKS,
                         PLAYLIST_REMOVE,
                         PLAYLIST_CLEAR]

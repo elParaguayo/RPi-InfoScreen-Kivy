@@ -20,6 +20,7 @@ from kivy.uix.slider import Slider
 from kivy.uix.dropdown import DropDown
 
 from core.bgimage import BGImageButton
+from core.bglabel import BGLabelButton
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -77,15 +78,28 @@ class SqueezePlaylistItem(ButtonBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super(SqueezePlaylistItem, self).__init__(**kwargs)
-        # Set the display properties
-        self.artwork = kwargs["track"]["art"]
-        self.artist = kwargs["track"]["artist"]
-        self.trackname = kwargs["track"]["title"]
-        self.posnum = str(kwargs["track"]["pos"])
-
         # Create references to underlying objects
         self.player = kwargs["player"]
         self.np = kwargs["np"]
+
+        # Set the display properties
+        try:
+            self.artwork = kwargs["track"]["art"]
+            self.artist = kwargs["track"]["artist"]
+            self.trackname = kwargs["track"]["title"]
+            self.posnum = str(kwargs["track"]["pos"])
+
+        # Sometimes the server hasn't loaded all the metadata yet
+        except KeyError:
+
+            # Create a dummy entry in the playlist
+            self.artwork = "10x10_transparent.png"
+            self.artist = "Loading..."
+            self.trackname = "Loading..."
+            self.posnum = "0"
+
+            # but schedule a refresh of the playlist
+            Clock.schedule_once(self.np.refresh_playlist, 2)
 
         # Check if we're the current track
         self.updatePlaylistPosition(self.np.cur_track["pos"])
@@ -211,7 +225,13 @@ class SqueezeNowPlaying(Accordion):
         # sure the currently playing track is highlighted.
         if cur_track["pos"] != self.cur_track["pos"]:
             for c in self.sv_playlist.children:
-                c.updatePlaylistPosition(cur_track["pos"])
+
+                # This will raise an error when it tries to update the
+                # "Refresh" button, so let's make sure we catch it.
+                try:
+                    c.updatePlaylistPosition(cur_track["pos"])
+                except AttributeError:
+                    pass
 
         # Set the local flag (so we can check it later)
         self.cur_track = cur_track
@@ -269,6 +289,25 @@ class SqueezeNowPlaying(Accordion):
         self.endtime = "{0:.0f}:{1:02.0f}".format(dm, ds)
         self.playprog.value = pr
 
+    def btn_refresh_playlist(self):
+        """Creates a Refresh button for the playlist screen and binds it
+           to the refresh_playlist method.
+        """
+        btn = BGLabelButton(text="Refresh Playlist",
+                            size=(780,30),
+                            size_hint=(None, None),
+                            bgcolour=[0, 0, 0, 0.5])
+        btn.bind(on_press=self.refresh_playlist)
+
+        return btn
+
+    def refresh_playlist(self, *args):
+        """Requests a refresh of the playlist."""
+        # We need to fake an event for the current player.
+        event = "{} playlist".format(self.player.get_ref())
+        self.sq_root.playlist_changed(event)
+
+
     def updatePlaylist(self, pl):
         """Method to display playlist for current player."""
         # Get the playlist info
@@ -278,6 +317,8 @@ class SqueezeNowPlaying(Accordion):
 
         # Clear the playlist
         self.sv_playlist.clear_widgets()
+
+        self.sv_playlist.add_widget(self.btn_refresh_playlist())
 
         # Loop over the playlist
         for i, tr in enumerate(plyl):
