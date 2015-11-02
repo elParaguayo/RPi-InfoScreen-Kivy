@@ -1,0 +1,19 @@
+Agenda screen
+-------------
+
+Requirements:
+- Currently this screen only works with Google calendars
+- dateutil and pytz python modules
+
+How to get it working
+---------------------
+
+I won't lie, this is not the easiest screen to set up! The problem is that you need to authorise the script to use the Google API However, as this is an open source program, I'm not allowed to share my secret token.
+
+This means you have to create your own. To do this, follow steps 1 and 2 on this page: https://developers.google.com/google-apps/calendar/quickstart/python
+
+After step 1 you need to create a folder called "secret" in the "agenda" screen folder and save "client_secret.json" there.
+
+After step 2 you should run the authorise file once "python /path/to/RPi-InfoScreen-Kivy/screens/agenda/authorise.py". You should do this while in a desktop environment as this will open a browser to authorise your machine.
+
+Assuming that all goes well, you can run the screen script normally.
