@@ -1,7 +1,7 @@
 {
     "screen": "WeatherScreen",
     "kv": "weather.kv",
-    "enabled": true,
+    "enabled": false,
     "dependencies": ["requests"],
     "params": {
         "key": "YOUR_API_KEY_HERE",
