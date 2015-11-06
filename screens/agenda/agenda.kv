@@ -1,0 +1,78 @@
+<AgendaScreen>
+    calendar_grid: calendar_grid
+
+    ScrollView:
+        id: agenda_scroll
+        size_hint: 1, 1
+
+        GridLayout:
+            id: calendar_grid
+            size_hint: 1, None
+            height: self.minimum_height
+            cols: 1
+            padding: 5
+            spacing: 2
+
+<CalendarHeader>
+    size_hint: 1, None
+    height: 25
+    cols: 2
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0.5, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Label:
+        text: root.header
+        size_hint_x: None
+        text_size: self.size
+        width: 250
+        halign: "left"
+        padding: 10, 5
+
+    Label:
+        text: ""
+
+
+<CalendarItem>
+    cols: 2
+    size_hint: 1, None
+    height: self.minimum_height
+
+    Widget:
+        size_hint_x: 0.05
+
+        canvas.before:
+            Color:
+                rgba: root.bgcolour
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+    GridLayout:
+        rows: 2
+        size_hint_y: None
+        height: self.minimum_height
+
+        Label:
+            id: lbl_evtime
+            color: 1, 1, 1, 1
+            size_hint_y:  None
+            height: 25
+            text: root.evdetail
+            text_size: self.size
+            halign: "left"
+            padding: 15, 0
+
+        Label:
+            id: lbl_evdetail
+            color: 0.5, 0.5, 0.5, 1
+            size_hint_y: None
+            height: 20
+            text: root.evtime
+            text_size: self.size
+            halign: "left"
+            padding: 15, 0

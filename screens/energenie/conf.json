@@ -1,0 +1,15 @@
+{
+    "screen": "EnergenieScreen",
+    "kv": "energenie.kv",
+    "dependencies": ["pigpio"],
+    "enabled": false,
+    "params": {
+        "host": "192.168.0.1",
+        "switchnames": {
+            "1": "Hall lamp",
+            "2": "Bedroom",
+            "3": "Kitchen",
+            "4": "Radio"
+        }
+    }
+}

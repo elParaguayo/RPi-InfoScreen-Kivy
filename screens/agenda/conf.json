@@ -1,0 +1,9 @@
+{
+    "screen": "AgendaScreen",
+    "kv": "agenda.kv",
+    "dependencies": ["dateutil", "pytz"],
+    "enabled": false,
+    "params": {
+        "max_days": 90
+    }
+}

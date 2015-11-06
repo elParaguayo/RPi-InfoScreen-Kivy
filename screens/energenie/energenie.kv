@@ -1,0 +1,41 @@
+<EnergenieButton>:
+    orientation: "vertical"
+    size: 400, 200
+    size_hint: None, None
+
+    Label:
+        text: root.switch_name
+        font_size: 20
+        size_hint_y: 0.2
+
+    BoxLayout:
+        orientation: "horizontal"
+        spacing: 10
+        padding: 80, 20
+
+        Button:
+            text: "ON"
+            on_press: root.switch_on()
+
+        Button:
+            text: "OFF"
+            on_press: root.switch_off()
+
+<EnergenieScreen>:
+    nrg_box: nrg_box
+    nrg_stack: nrg_stack
+
+    BoxLayout:
+        id: nrg_box
+        orientation: "vertical"
+
+        Label:
+            id: eclabel
+            size_hint_y: None
+            height: 50
+            text: "Energenie Control Screen"
+            font_size: 25
+
+        StackLayout:
+            id: nrg_stack
+            orientation: "lr-tb"

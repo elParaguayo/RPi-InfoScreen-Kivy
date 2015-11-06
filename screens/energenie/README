@@ -1,0 +1,7 @@
+Energenie Control Screen
+
+Very simple screen to manage the control of four switches.
+
+To use this screen, the Raspberry Pi connected to the Energenie transmitter must be running pigpiod. If you don't know how to do this, there are plenty of instructions on the forum.
+
+To set up, just change the "host" value of the conf.json file to the address of your Pi and change the names of the switches.

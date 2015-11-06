@@ -1,7 +1,7 @@
 {
     "screen": "LondonBusScreen",
     "kv": "londonbus.kv",
-    "enabled": true,
+    "enabled": false,
     "dependencies": ["requests"],
     "params": {
         "stops": [
