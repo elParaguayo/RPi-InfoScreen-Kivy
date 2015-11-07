@@ -1,0 +1,16 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<PhotoAlbumScreen>:
+    photoscreen: photoscreen
+
+    ScreenManager:
+        id: photoscreen
+        transition: FadeTransition(duration=1)
+
+<Photo>
+    AsyncImage:
+        source: root.photo_path
+
+<PhotoLoading>
+    Label:
+        text: "Retrieving list of photos"

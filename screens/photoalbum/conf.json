@@ -1,0 +1,16 @@
+{
+    "screen": "PhotoAlbumScreen",
+    "kv": "photos.kv",
+    "dependencies": [],
+    "enabled": true,
+    "params":
+    {
+        "duration": 5,
+        "extensions": ["jpg", "png"],
+        "folders":
+        [
+            "/home/pi/Pictures",
+            "/home/pi/Desktop"
+        ]
+    }
+}
