@@ -2,7 +2,7 @@
     "screen": "PhotoAlbumScreen",
     "kv": "photos.kv",
     "dependencies": [],
-    "enabled": true,
+    "enabled": false,
     "params":
     {
         "duration": 5,
