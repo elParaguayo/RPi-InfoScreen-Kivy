@@ -1,0 +1,10 @@
+Photo album
+-----------
+
+Set up:
+
+Edit the conf.json file as follows
+
+- "duration":   The number of seconds to show the photo
+- "extensions": A list of extensions that will be included when searching for photos.
+- "folders":    A list of folders to search for photos (not recursive)
