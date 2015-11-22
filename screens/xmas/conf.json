@@ -1,0 +1,6 @@
+{
+    "screen": "XmasScreen",
+    "kv": "xmas.kv",
+    "dependencies": [],
+    "enabled": true
+}
