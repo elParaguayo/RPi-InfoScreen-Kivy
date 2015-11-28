@@ -1,0 +1,67 @@
+<WinLabel>:
+    size: 400, 75
+    size_hint: None, None
+    font_size: 50
+
+<PongBall>:
+    size: 50, 50
+    size_hint: None, None
+    canvas:
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+<PongPaddle>:
+    size: 25, 200
+    size_hint: None, None
+    canvas:
+        Rectangle:
+            pos:self.pos
+            size:self.size
+
+<PongScreen>:
+    ball: pong_ball
+    player1: player_left
+    player2: player_right
+    pongfloat: pongfloat
+
+    FloatLayout:
+
+        id: pongfloat
+
+        canvas:
+            Rectangle:
+                pos: self.center_x-5, 0
+                size: 10, self.height
+
+        Label:
+
+            size: 300, 40
+            size_hint: None, None
+            font_size: 70
+            center_x: root.width / 4
+            top: root.top - 40
+            text: str(root.player1.score)
+
+        Label:
+
+            size: 300, 40
+            size_hint: None, None
+            font_size: 70
+            center_x: root.width * 3 / 4
+            top: root.top - 40
+            text: str(root.player2.score)
+
+        PongBall:
+            id: pong_ball
+            center: self.parent.center
+
+        PongPaddle:
+            id: player_left
+            x: root.x + 50
+            center_y: root.center_y
+
+        PongPaddle:
+            id: player_right
+            x: root.width-self.width - 50
+            center_y: root.center_y

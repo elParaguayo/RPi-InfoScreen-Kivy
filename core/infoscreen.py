@@ -1,11 +1,15 @@
 import imp
 
 from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import BooleanProperty
 
 from core.failedscreen import FailedScreen
 
 
 class InfoScreen(FloatLayout):
+    # Flag for determining whether screen is locked or not
+    locked = BooleanProperty(False)
+
     def __init__(self, **kwargs):
         super(InfoScreen, self).__init__(**kwargs)
 
@@ -83,13 +87,20 @@ class InfoScreen(FloatLayout):
             self.scrmgr.add_widget(self.failscreen)
             self.scrmgr.current = "FAILEDSCREENS"
 
-    def next_screen(self, rev=False):
-        if rev:
-            self.scrmgr.transition.direction = "right"
-            inc = -1
+    def toggle_lock(self, locked=None):
+        if locked is None:
+            self.locked = not self.locked
         else:
-            self.scrmgr.transition.direction = "left"
-            inc = 1
+            self.locked = bool(locked)
 
-        self.index = (self.index + inc) % len(self.availablescreens)
-        self.scrmgr.current = self.availablescreens[self.index]
+    def next_screen(self, rev=False):
+        if not self.locked:
+            if rev:
+                self.scrmgr.transition.direction = "right"
+                inc = -1
+            else:
+                self.scrmgr.transition.direction = "left"
+                inc = 1
+
+            self.index = (self.index + inc) % len(self.availablescreens)
+            self.scrmgr.current = self.availablescreens[self.index]
