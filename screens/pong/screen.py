@@ -60,6 +60,8 @@ class PongScreen(Screen):
         except ValueError:
             self.winscore = 5
 
+        self.speed = 8
+
     def lock(self, locked=True):
         app = App.get_running_app()
         app.base.toggle_lock(locked)
@@ -78,7 +80,7 @@ class PongScreen(Screen):
     def start(self, lbl):
         self.pongfloat.remove_widget(lbl)
         self.serve_ball()
-        Clock.schedule_interval(self.update, 1.0 / 60.0)
+        Clock.schedule_interval(self.update, 1.0 / 30.0)
         self.lock(True)
 
     def restart(self, vel, lbl):
@@ -102,7 +104,7 @@ class PongScreen(Screen):
                             pos=(200, 160),
                             bgcolour=[0, 0, 0, 0.8])
 
-        v = (-4, 0) if player == 1 else (4, 0)
+        v = (0 - self.speed, 0) if player == 1 else (self.speed, 0)
 
         cb = lambda instance, v=v, lbl=self.lbl: self.restart(v, lbl)
 
@@ -118,9 +120,12 @@ class PongScreen(Screen):
         self.lock(False)
         self.lbl.text = "Press to restart"
 
-    def serve_ball(self, vel=(4, 0)):
+    def serve_ball(self, vel=None):
         self.ball.center = self.center
-        self.ball.velocity = vel
+        if vel is None:
+            self.ball.velocity = (self.speed, 0)
+        else:
+            self.ball.velocity = vel
 
     def update(self, dt):
         self.ball.move()
@@ -139,13 +144,13 @@ class PongScreen(Screen):
             if self.player2.score == self.winscore:
                 self.win(2)
             else:
-                self.serve_ball(vel=(4, 0))
+                self.serve_ball(vel=(self.speed, 0))
         if self.ball.x > self.width:
             self.player1.score += 1
             if self.player1.score == self.winscore:
                 self.win(1)
             else:
-                self.serve_ball(vel=(-4, 0))
+                self.serve_ball(vel=(0 - self.speed, 0))
 
     def on_touch_move(self, touch):
         if touch.x < self.width / 3:
