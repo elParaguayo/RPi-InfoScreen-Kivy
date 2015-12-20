@@ -8,7 +8,7 @@ PluginScript = "screen.py"
 ScreenConf = "conf.json"
 
 
-def getPlugins():
+def getPlugins(inactive=False):
     plugins = []
     a = 1
 
@@ -32,10 +32,18 @@ def getPlugins():
             conf = json.load(open(os.path.join(location, ScreenConf)))
 
             # See if the user has disabled the plugin.
-            if conf.get("enabled", False):
+            if conf.get("enabled", False) or inactive:
 
                 # Get the KV file text
-                kv = open(os.path.join(location, conf["kv"])).readlines()
+                kvpath = os.path.join(location, conf["kv"])
+                kv = open(kvpath).readlines()
+
+                # See if there's a web config file
+                webfile = os.path.join(location, "web.py")
+                if os.path.isfile(webfile):
+                    web = imp.find_module("web", [location])
+                else:
+                    web = None
 
                 # Custom dict for the plugin
                 plugin = {"name": i,
@@ -44,7 +52,10 @@ def getPlugins():
                           "screen": conf["screen"],
                           "dependencies": conf.get("dependencies", list()),
                           "kv": kv,
-                          "params": conf.get("params", None)}
+                          "kvpath": kvpath,
+                          "params": conf.get("params", None),
+                          "enabled": conf.get("enabled", False),
+                          "web": web}
 
                 plugins.append(plugin)
                 a = a + 1

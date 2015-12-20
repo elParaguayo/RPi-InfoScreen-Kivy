@@ -1,12 +1,17 @@
 import imp
 
 from kivy.uix.floatlayout import FloatLayout
+from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 
 from core.failedscreen import FailedScreen
+from core.getplugins import getPlugins
 
 
 class InfoScreen(FloatLayout):
     def __init__(self, **kwargs):
+        scrmgr = ObjectProperty(None)
+
         super(InfoScreen, self).__init__(**kwargs)
 
         # Get our list of available plugins
@@ -27,7 +32,7 @@ class InfoScreen(FloatLayout):
         failedscreens = []
 
         # Create a reference to the screenmanager instance
-        self.scrmgr = self.ids.iscreenmgr
+        # self.scrmgr = self.ids.iscreenmgr
 
         # Loop over plugins
         for p in plugins:
@@ -82,6 +87,38 @@ class InfoScreen(FloatLayout):
             # the user sees.
             self.scrmgr.add_widget(self.failscreen)
             self.scrmgr.current = "FAILEDSCREENS"
+
+    def reload_screen(self, screen):
+        self.remove_screen(screen)
+        self.add_screen(screen)
+
+    def add_screen(self, screenname):
+        foundscreen = [p for p in getPlugins() if p["name"] == screenname]
+        if foundscreen:
+            p = foundscreen[0]
+            plugin = imp.load_module("screen", *p["info"])
+            screen = getattr(plugin, p["screen"])
+            Builder.load_file(p["kvpath"])
+            self.scrmgr.add_widget(screen(name=p["name"],
+                                   master=self,
+                                   params=p["params"]))
+            self.availablescreens.append(screenname)
+
+            self.scrmgr.current = screenname
+            self.index = self.availablescreens.index(screenname)
+
+    def remove_screen(self, screenname):
+        foundscreen = [p for p in getPlugins(inactive=True) if p["name"] == screenname]
+        while screenname in self.availablescreens:
+            self.availablescreens.remove(screenname)
+            self.next_screen()
+            c = self.scrmgr.get_screen(screenname)
+            self.scrmgr.remove_widget(c)
+            del c
+        try:
+            Builder.unload_file(foundscreen[0]["kvpath"])
+        except IndexError:
+            pass
 
     def next_screen(self, rev=False):
         if rev:
