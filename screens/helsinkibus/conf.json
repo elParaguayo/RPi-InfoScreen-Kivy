@@ -1,0 +1,18 @@
+{
+    "screen": "HelsinkiBusScreen",
+    "kv": "helsinkibus.kv",
+    "enabled": true,
+    "dependencies": ["requests"],
+    "params": {
+        "stops": [
+            {"description": "Merituuli Shell",
+             "stopid": "U3RvcDpIU0w6MjQzMjIxNw=="},
+            {"description": "Merituuli Kauppakeskus",
+             "stopid": "U3RvcDpIU0w6MjQzMjIxOA=="},
+            {"description": "Niittyrinne XXL",
+             "stopid": "U3RvcDpIU0w6MjQzMjIwNQ=="},
+            {"description": "Niittyrinne Gigantti",
+             "stopid": "U3RvcDpIU0w6MjQzMjIwNA=="}
+        ]
+    }
+}

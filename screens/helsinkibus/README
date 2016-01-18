@@ -1,0 +1,16 @@
+Helsinki Bus Arrivals
+-------------------
+
+Update the "params" section of the conf.json file to include the desired bus stops.
+
+Each entry in the "stops" section is a dictionary containing two entries:
+    "description" - Your name for the bus stop
+    "stopid" - the identifier for the bus stop
+
+You can find the identifer codes on the HSL website.
+
+Navigate to:
+
+        http://dev.hsl.fi/graphql/console/?query={agency%28id%3A%22HSL%22%29%20{routes%20{stops%20{id%20name%20code}}}}
+
+There is propably a way in the near future to find this ID by searching for the "code" field. But this is not the case today.
