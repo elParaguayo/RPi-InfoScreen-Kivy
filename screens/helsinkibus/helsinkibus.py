@@ -97,9 +97,13 @@ def BusLookup(stopcode, filterbuses=None):
         b["destination"] = bus['trip']['tripHeadsign']
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
+        if bus['departureDelay'] == 0:
+            b["alert"] = "On time"
+        else:
+            b["alert"] = "Delayed"
         alerts = bus['trip']['route']['alerts']
         for alert in alerts:
-            bus["alert"] = bus['trip']['route']['alerts']['alertDescriptionText']
+            b["alert"] = bus['trip']['route']['alerts']['alertDescriptionText']
         # Add the bus to our list
         buses.append(b)
 

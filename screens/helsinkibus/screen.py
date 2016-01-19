@@ -33,6 +33,7 @@ class HelsinkiBus(BoxLayout):
     bus_route = StringProperty("Loading...")
     bus_destination = StringProperty("Loading...")
     bus_time = StringProperty("Loading...")
+    bus_alert = StringProperty("Loading...")
 
     def __init__(self, **kwargs):
         super(HelsinkiBus, self).__init__(**kwargs)
@@ -40,6 +41,7 @@ class HelsinkiBus(BoxLayout):
         self.bus_route = bus["route"]
         self.bus_destination = bus["destination"]
         self.bus_time = bus["time"]
+        self.bus_alert = bus["alert"]
 
 
 class HelsinkiBusStop(Screen):
