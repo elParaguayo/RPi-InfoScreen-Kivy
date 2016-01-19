@@ -1,13 +1,6 @@
 """This script demonstrates how to retrieve bus countdown information
-from the TfL website and turn it into a structure that can then be used by
-other python codes.
-
-Unfortunately, the bus countdown information is not true JSON so, as you'll
-see from the code below, we need to play with it a bit first in order to
-parse it successfully.
-
-Please note, if you use TfL data in your application you should
-acknowledge the source of your data as appropriate.
+from the digitransit.fi  website and turn it into a structure that can then
+be used by other python codes.
 """
 
 # Simple way of submitting web requests (easier to use than urllib2)
@@ -20,10 +13,10 @@ import json
 from datetime import datetime
 
 # This is the address used for the bus stop information.
-# We'll need the bus stop ID (5 number code) but we'll set this when calling
+# We'll need the bus stop ID but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
 BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
-data = "{node(id: \"%s\") { ... on Stop {name code stoptimesWithoutPatterns(numberOfDepartures:20) {trip{tripHeadsign route{shortName alerts{alertHeaderText alertDescriptionText}}}scheduledDeparture departureDelay serviceDay}}}}"
+data = "{node(id: \"%s\") { ... on Stop {name code stoptimesWithoutPatterns(numberOfDepartures:20) {trip{tripHeadsign route{shortName alerts{alertDescriptionText}}}scheduledDeparture departureDelay serviceDay}}}}"
 
 def __getBusData(stopcode):
     # Add the stop code to the web address and get the page
@@ -70,7 +63,7 @@ def BusLookup(stopcode, filterbuses=None):
 
     Takes two parameters:
 
-      stopcode:    5 digit ID code of desired stop
+      stopcode:    ID code of desired stop
       filterbuses: list of bus routes to filter by. If omitted, all bus routes
                    at the stop will be shown.
 
@@ -104,6 +97,9 @@ def BusLookup(stopcode, filterbuses=None):
         b["destination"] = bus['trip']['tripHeadsign']
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
+        alerts = bus['trip']['route']['alerts']
+        for alert in alerts:
+            bus["alert"] = bus['trip']['route']['alerts']['alertDescriptionText']
         # Add the bus to our list
         buses.append(b)
 
