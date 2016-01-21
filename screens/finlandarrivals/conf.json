@@ -1,0 +1,18 @@
+{
+    "screen": "FinlandArrivalsScreen",
+    "kv": "finlandarrivals.kv",
+    "enabled": true,
+    "dependencies": ["requests"],
+    "params": {
+        "stops": [
+            {"description": "Merituuli Kauppakeskus",
+             "stopid": "U3RvcDpIU0w6MjQzMjIxOA=="},
+            {"description": "Niittyrinne XXL",
+             "stopid": "U3RvcDpIU0w6MjQzMjIwNQ=="},
+            {"description": "Finnoonsolmu",
+             "stopid": "U3RvcDpIU0w6MjQzMjIwMQ=="},
+            {"description": "Hannuksentie",
+             "stopid": "U3RvcDpIU0w6MjQ0MjIwNA=="}
+        ]
+    }
+}
