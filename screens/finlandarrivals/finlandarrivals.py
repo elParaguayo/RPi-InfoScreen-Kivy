@@ -16,7 +16,27 @@ from datetime import datetime
 # We'll need the bus stop ID but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
 BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
-data = "{stop(id: \"%s\") {name code stoptimesWithoutPatterns(numberOfDepartures:20) {trip{tripHeadsign route{shortName} alerts{alertDescriptionTextTranslations {text language}}}scheduledDeparture departureDelay serviceDay}}}"
+data = \
+"{" \
+"  stop(id: \"%s\") {" \
+"    name code" \
+"    stoptimesWithoutPatterns(numberOfDepartures:20) {" \
+"      trip{" \
+"        tripHeadsign" \
+"        route{" \
+"          shortName" \
+"        }" \
+"        alerts{" \
+"          alertDescriptionTextTranslations {" \
+"            text" \
+"            language" \
+"          }" \
+"        }" \
+"      }" \
+"      scheduledDeparture departureDelay serviceDay" \
+"    }" \
+"  }" \
+"}"
 
 def __getBusData(stopcode):
     # Add the stop code to the web address and get the page
