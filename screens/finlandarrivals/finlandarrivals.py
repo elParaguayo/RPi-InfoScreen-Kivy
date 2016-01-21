@@ -118,11 +118,11 @@ def BusLookup(stopcode, filterbuses=None):
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
         if bus['departureDelay'] <= -60:
-            b["alert"] = "Running ahead"
+            b["delay"] = "Running ahead"
         elif bus['departureDelay'] < 180:
-            b["alert"] = "On time"
+            b["delay"] = "On time"
         else:
-            b["alert"] = "Delayed"
+            b["delay"] = "Delayed"
         #alerts = bus['trip']['alerts']
         #for alert in alerts:
         #    b["alert"] = bus['trip']['alerts']['alertDescriptionTextTranslations']['text']
