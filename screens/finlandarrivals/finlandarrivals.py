@@ -123,9 +123,12 @@ def BusLookup(stopcode, filterbuses=None):
             b["delay"] = "On time"
         else:
             b["delay"] = "Delayed"
-        #alerts = bus['trip']['alerts']
-        #for alert in alerts:
-        #    b["alert"] = bus['trip']['alerts']['alertDescriptionTextTranslations']['text']
+        alerts = bus['trip']['alerts']
+        for alert in alerts:
+            if "alert" in(b):
+                b["alert"] += bus['trip']['alerts']['alertDescriptionTextTranslations']['text']
+            else:
+                b["alert"] = bus['trip']['alerts']['alertDescriptionTextTranslations']['text']
         # Add the bus to our list
         buses.append(b)
 

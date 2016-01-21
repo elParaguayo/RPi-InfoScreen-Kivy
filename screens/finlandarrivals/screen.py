@@ -33,7 +33,7 @@ class FinlandArrivals(BoxLayout):
     bus_route = StringProperty("Loading...")
     bus_destination = StringProperty("Loading...")
     bus_time = StringProperty("Loading...")
-    bus_alert = StringProperty("Loading...")
+    bus_delay = StringProperty("Loading...")
 
     def __init__(self, **kwargs):
         super(FinlandArrivals, self).__init__(**kwargs)
@@ -41,7 +41,7 @@ class FinlandArrivals(BoxLayout):
         self.bus_route = bus["route"]
         self.bus_destination = bus["destination"]
         self.bus_time = bus["time"]
-        self.bus_alert = bus["alert"]
+        self.bus_delay = bus["delay"]
 
 
 class FinlandArrivalsStop(Screen):
@@ -49,6 +49,7 @@ class FinlandArrivalsStop(Screen):
        bus stop.
     """
     description = StringProperty("")
+    alert = StringProperty("")
 
     def __init__(self, **kwargs):
         super(FinlandArrivalsStop, self).__init__(**kwargs)
@@ -132,6 +133,8 @@ class FinlandArrivalsStop(Screen):
         # StackLayout
         for bus in buses:
             bs = FinlandArrivals(bus=bus)
+            if "alert" in(bus):
+                self.alert = bus["alert"]
             sl.add_widget(bs)
 
     def toggled(self, instance, value):
