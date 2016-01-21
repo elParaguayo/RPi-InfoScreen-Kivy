@@ -16,7 +16,7 @@ from datetime import datetime
 # We'll need the bus stop ID but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
 BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
-data = "{node(id: \"%s\") { ... on Stop {name code stoptimesWithoutPatterns(numberOfDepartures:20) {trip{tripHeadsign route{shortName alerts{alertDescriptionText}}}scheduledDeparture departureDelay serviceDay}}}}"
+data = "{stop(id: \"%s\") {name code stoptimesWithoutPatterns(numberOfDepartures:20) {trip{tripHeadsign route{shortName} alerts{alertDescriptionTextTranslations {text language}}}scheduledDeparture departureDelay serviceDay}}}"
 
 def __getBusData(stopcode):
     # Add the stop code to the web address and get the page
@@ -27,7 +27,7 @@ def __getBusData(stopcode):
 
             # try and load the response into JSON
             j = json.loads(r.content)
-            return j['data']['node']['stoptimesWithoutPatterns']
+            return j['data']['stop']['stoptimesWithoutPatterns']
 
     else:
         return None
@@ -103,9 +103,9 @@ def BusLookup(stopcode, filterbuses=None):
             b["alert"] = "On time"
         else:
             b["alert"] = "Delayed"
-        alerts = bus['trip']['route']['alerts']
-        for alert in alerts:
-            b["alert"] = bus['trip']['route']['alerts']['alertDescriptionText']
+        #alerts = bus['trip']['alerts']
+        #for alert in alerts:
+        #    b["alert"] = bus['trip']['alerts']['alertDescriptionTextTranslations']['text']
         # Add the bus to our list
         buses.append(b)
 
