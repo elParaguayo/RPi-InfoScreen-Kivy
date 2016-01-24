@@ -75,7 +75,7 @@ class WordClockScreen(Screen):
 
         # Is our language one where we need to increment the hour after 30 mins
         # e.g. 9:40 is "Twenty to ten"
-        if self.config.HOUR_INCREMENT and (minute > 30):
+        if self.config.HOUR_INCREMENT and (minute > self.config.HOUR_INCREMENT_TIME):
             hour += 1
 
         # Convert rounded time to string
@@ -107,7 +107,7 @@ class WordClockScreen(Screen):
             tm = d.get("all", []) + d[h] + d[m] + d.get(ampm, [])
 
             # Build a map of all letters saying whether they're on or off
-            st = [x in tm for x in range(120)]
+            st = [x in tm for x in range(len(self.config.LAYOUT))]
 
             # Create a list of tuples of (letter, state)
             updt = zip(self.letters, st)

@@ -74,3 +74,5 @@ FONTSIZE = 40
 # Is our language one where we need to increment the hour after 30 mins
 # e.g. 9:40 is "Twenty to ten"
 HOUR_INCREMENT = True
+
+HOUR_INCREMENT_TIME = 30
