@@ -12,6 +12,9 @@ import json
 # We need datetime to calculate the amount of time until the bus is departure
 from datetime import datetime
 
+# We need time to get the local time
+import time
+
 # This is the address used for the bus stop information.
 # We'll need the bus stop ID but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
@@ -52,8 +55,12 @@ def __getBusData(stopcode):
     else:
         return None
 
+def datetime_from_utc_to_local(utc_datetime):
+    now_timestamp = time.time()
+    offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
+    return utc_datetime + offset
 
-def __getBusTime(epoch, bustime, delay):
+def __getBusTime(epoch, departuretime):
     """Function to convert the arrival time into something a bit more
     meaningful.
 
@@ -61,21 +68,13 @@ def __getBusTime(epoch, bustime, delay):
     that time.
     """
     # Convert the epoch time number into a datetime object
-    bustime = datetime.utcfromtimestamp(epoch+bustime+delay)
+    bustime = datetime.utcfromtimestamp(epoch+departuretime)
+    localtime = datetime_from_utc_to_local(bustime)
     # Calculate the difference between now and the arrival time
     # The difference is a timedelta object.
     diff = bustime - datetime.utcnow()
-    # Unpack this into minutes and seconds (but we will discard the seconds)
-    minutes, _ = divmod(diff.total_seconds(), 60)
-    if minutes == 0:
-        arrival = "Due"
-    elif minutes == 1:
-        arrival = "1 minute"
-    else:
-        arrival = "{m:.0f} minutes".format(m=minutes)
-
-    # return both the formatted string and the timedelta object
-    return arrival, diff
+    # return both the formatted string and delay
+    return "{:%H:%M}".format(localtime), diff
 
 
 def BusLookup(stopcode, filterbuses=None):
@@ -118,13 +117,16 @@ def BusLookup(stopcode, filterbuses=None):
         # Set the destination of the bus
         b["destination"] = bus['trip']['tripHeadsign']
         # Get the string time and timedelta object of the bus
-        b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
-        if bus['departureDelay'] <= -60:
-            b["delay"] = "Running ahead"
-        elif bus['departureDelay'] < 180:
-            b["delay"] = "On time"
+        b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'])
+        # Unpack this into minutes and seconds (but we will discard the seconds)
+        minutes, _ = divmod(b["delta"].total_seconds(), 60)
+        delay = bus['departureDelay'] / 60
+        if delay <= -60:
+            b["delay"] = "Running ahead {m:.0f} minutes".format(m=minutes)
+        elif delay < 180:
+            b["delay"] = "{m:.0f} minutes".format(m=minutes)
         else:
-            b["delay"] = "Delayed"
+            b["delay"] = "Delayed {m:.0f} minutes".format(m=minutes)
         alerts = bus['trip']['alerts']
         for alert in alerts:
             if "alert" in(b):
