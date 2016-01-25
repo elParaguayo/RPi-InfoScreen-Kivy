@@ -24,7 +24,7 @@ data = \
 "      trip{" \
 "        tripHeadsign" \
 "        route{" \
-"          shortName" \
+"          shortName type" \
 "        }" \
 "        alerts{" \
 "          alertDescriptionTextTranslations {" \
@@ -113,6 +113,8 @@ def BusLookup(stopcode, filterbuses=None):
         b = {}
         # Set the route number of the bus
         b["route"] = bus['trip']['route']['shortName']
+        # Set the transport type
+        b["type"] = bus['trip']['route']['type']
         # Set the destination of the bus
         b["destination"] = bus['trip']['tripHeadsign']
         # Get the string time and timedelta object of the bus

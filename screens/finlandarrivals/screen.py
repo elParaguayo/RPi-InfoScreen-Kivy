@@ -31,6 +31,7 @@ class FinlandArrivals(BoxLayout):
        Displays route name, destination and expected arrival time.
     """
     bus_route = StringProperty("Loading...")
+    bus_type = StringProperty("Loading...")
     bus_destination = StringProperty("Loading...")
     bus_time = StringProperty("Loading...")
     bus_delay = StringProperty("Loading...")
@@ -39,6 +40,7 @@ class FinlandArrivals(BoxLayout):
         super(FinlandArrivals, self).__init__(**kwargs)
         bus = kwargs["bus"]
         self.bus_route = bus["route"]
+        self.bus_type = bus["type"]
         self.bus_destination = bus["destination"]
         self.bus_time = bus["time"]
         self.bus_delay = bus["delay"]
