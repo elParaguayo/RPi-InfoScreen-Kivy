@@ -76,14 +76,26 @@
     orientation: "horizontal"
     height: 30
     size_hint_y: None
+    font_name: "DroidSansMono.ttf"
 
     Label:
+        text_size: self.size
+        halign: 'right'
+        valign: 'middle'
+        size_hint: 0.1, None
+        font_name: "DroidSans-Bold.ttf"
         text: root.bus_time
         color: 1,1,0,1 # Yellow
     Label:
+        size_hint: 0.1, None
         text: root.bus_route
     Label:
+        text_size: self.size
+        halign: 'left'
+        valign: 'middle'
+        size_hint: 0.6, None
         text: root.bus_destination
     Label:
+        size_hint: 0.2, None
         text: root.bus_delay
 

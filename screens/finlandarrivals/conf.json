@@ -6,7 +6,9 @@
     "params": {
         "stops": [
             {"description": "Tammisaari VR",
-             "stopid": "MATKA:nondr_8075551"},
+             "stopid": "MATKA:nondr_8991433"},
+            {"description": "Pasila",
+             "stopid": "HSL:1174552"},
             {"description": "Merituuli Kauppakeskus",
              "stopid": "HSL:2432218"},
             {"description": "Niittyrinne XXL",

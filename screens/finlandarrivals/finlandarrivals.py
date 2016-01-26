@@ -27,7 +27,7 @@ data = \
 "      trip{" \
 "        tripHeadsign" \
 "        route{" \
-"          shortName type" \
+"          shortName longName type" \
 "        }" \
 "        alerts{" \
 "          alertDescriptionTextTranslations {" \
@@ -115,7 +115,8 @@ def BusLookup(stopcode, filterbuses=None):
         # Set the transport type
         b["type"] = bus['trip']['route']['type']
         # Set the destination of the bus
-        b["destination"] = bus['trip']['tripHeadsign']
+        #b["destination"] = bus['trip']['tripHeadsign']
+        b["destination"] = bus['trip']['route']['longName']
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'])
         # Unpack this into minutes and seconds (but we will discard the seconds)
