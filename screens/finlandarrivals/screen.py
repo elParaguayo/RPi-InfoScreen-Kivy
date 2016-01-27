@@ -2,6 +2,7 @@ import os
 import sys
 import re
 
+from datetime import datetime
 from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
@@ -50,14 +51,28 @@ class FinlandArrivalsStop(Screen):
     """Custom screen class for showing countdown information for a specific
        bus stop.
     """
+    # String Property to hold time
+    timedata = StringProperty("")
     description = StringProperty("")
     alert = StringProperty("")
+
+    def get_time(self):
+        """Sets self.timedata to current time."""
+        self.timedata = "{:%H:%M:%S}".format(datetime.now())
+
+    def update(self, dt):
+        self.get_time()
 
     def __init__(self, **kwargs):
         super(FinlandArrivalsStop, self).__init__(**kwargs)
         self.stop = kwargs["stop"]
         self.description = self.stop["description"]
         self.filters = None
+        self.get_time()
+        self.stimer = None
+
+    def on_pre_enter(self):
+        self.get_time()
 
     def on_enter(self):
         # Refresh the information when we load the screen
@@ -65,6 +80,13 @@ class FinlandArrivalsStop(Screen):
 
         # and schedule updates every 30 seconds.
         self.timer = Clock.schedule_interval(self.get_buses, 30)
+        # We only need to update the clock every second.
+        self.stimer = Clock.schedule_interval(self.update, 1)
+
+
+    def on_pre_leave(self):
+        # Save resource by unscheduling the updates.
+        Clock.unschedule(self.stimer)
 
     def on_leave(self):
         # Save resource by removing schedule

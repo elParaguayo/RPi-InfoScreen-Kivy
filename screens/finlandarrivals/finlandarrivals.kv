@@ -29,9 +29,26 @@
         orientation: "vertical"
         spacing: 10
 
-        Label:
+        BoxLayout:
             size_hint_y: 0.2
-            text: root.description
+            orientation: "horizontal"
+            padding: 50,0
+            id: platform
+
+            Label:
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+                text: root.description
+                font_size: 30
+
+            Label:
+                text_size: self.size
+                halign: 'right'
+                valign: 'middle'
+                font_name: "screens/finlandarrivals/resources/SFDigitalReadout-Medium.ttf"
+                text: root.timedata
+                font_size: 60
 
         # BoxLayout:
         #     orientation: "vertical"
@@ -58,6 +75,7 @@
             size_hint_y: None
 
             Label:
+                text_size: self.size
                 padding_x: 5
                 halign: "left"
                 font_size: 10
