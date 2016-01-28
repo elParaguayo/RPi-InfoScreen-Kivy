@@ -114,7 +114,7 @@ def BusLookup(stopcode):
         b["time"], b["delta"], b["estimated"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
         # Unpack this into minutes and seconds (but we will discard the seconds)
         minutes, _ = divmod(b["delta"].total_seconds(), 60)
-        delay = bus['departureDelay'] / 60
+        delay = bus['departureDelay']
         if delay <= -60:
             b["delay"] = "Running ahead {m:.0f} minutes".format(m=minutes)
         elif delay < 180:
