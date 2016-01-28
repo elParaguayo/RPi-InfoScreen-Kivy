@@ -60,7 +60,7 @@ def datetime_from_utc_to_local(utc_datetime):
     offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
     return utc_datetime + offset
 
-def __getBusTime(epoch, departuretime):
+def __getBusTime(epoch, departuretime, delaytime):
     """Function to convert the arrival time into something a bit more
     meaningful.
 
@@ -69,12 +69,14 @@ def __getBusTime(epoch, departuretime):
     """
     # Convert the epoch time number into a datetime object
     bustime = datetime.utcfromtimestamp(epoch+departuretime)
+    realbustime = datetime.utcfromtimestamp(epoch+departuretime+delaytime)
     localtime = datetime_from_utc_to_local(bustime)
+    estimatedtime = datetime_from_utc_to_local(realbustime)
     # Calculate the difference between now and the arrival time
     # The difference is a timedelta object.
     diff = bustime - datetime.utcnow()
     # return both the formatted string and delay
-    return "{:%H:%M}".format(localtime), diff
+    return "{:%H:%M}".format(localtime), diff, "{:%H:%M}".format(estimatedtime)
 
 
 def BusLookup(stopcode):
@@ -109,16 +111,16 @@ def BusLookup(stopcode):
         #b["destination"] = bus['trip']['tripHeadsign']
         b["destination"] = bus['trip']['route']['longName']
         # Get the string time and timedelta object of the bus
-        b["time"], b["delta"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'])
+        b["time"], b["delta"], b["estimated"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
         # Unpack this into minutes and seconds (but we will discard the seconds)
         minutes, _ = divmod(b["delta"].total_seconds(), 60)
         delay = bus['departureDelay'] / 60
         if delay <= -60:
             b["delay"] = "Running ahead {m:.0f} minutes".format(m=minutes)
         elif delay < 180:
-            b["delay"] = "{m:.0f} minutes".format(m=minutes)
+            b["delay"] = ""
         else:
-            b["delay"] = "Delayed {m:.0f} minutes".format(m=minutes)
+            b["delay"] = "Estimated "+b["estimated"]
         alerts = bus['trip']['alerts']
         for alert in alerts:
             if "alert" in(b):
