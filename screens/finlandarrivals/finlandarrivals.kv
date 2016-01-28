@@ -66,13 +66,14 @@
             size_hint_y: 0.15
 
         BoxLayout:
+            size_hint_y: 0.6
             id: bx_buses
             orientation: "vertical"
 
         BoxLayout:
             orientation: "horizontal"
             height: 40
-            size_hint_y: None
+            size_hint_y: 0.05
 
             Label:
                 text_size: self.size
@@ -100,20 +101,20 @@
         text_size: self.size
         halign: 'right'
         valign: 'middle'
-        size_hint: 0.1, None
+        size_hint_x: 0.1
         font_name: "DroidSans-Bold.ttf"
         text: root.bus_time
         color: 1,1,0,1 # Yellow
     Label:
-        size_hint: 0.1, None
+        size_hint_x: 0.1
         text: root.bus_route
     Label:
         text_size: self.size
         halign: 'left'
         valign: 'middle'
-        size_hint: 0.6, None
+        size_hint_x: 0.6
         text: root.bus_destination
     Label:
-        size_hint: 0.2, None
+        size_hint_x: 0.2
         text: root.bus_delay
 

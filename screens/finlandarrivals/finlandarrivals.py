@@ -22,7 +22,7 @@ BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
 data = \
 "{" \
 "  stop(id: \"%s\") {" \
-"    name code" \
+"    name code platformCode" \
 "    stoptimesWithoutPatterns(numberOfDepartures:20) {" \
 "      trip{" \
 "        tripHeadsign" \
@@ -77,17 +77,12 @@ def __getBusTime(epoch, departuretime):
     return "{:%H:%M}".format(localtime), diff
 
 
-def BusLookup(stopcode, filterbuses=None):
+def BusLookup(stopcode):
     """Method to look up bus arrival times at a given bus stop.
 
     Takes two parameters:
 
       stopcode:    ID code of desired stop
-      filterbuses: list of bus routes to filter by. If omitted, all bus routes
-                   at the stop will be shown.
-
-    If filterbuses receives anything other than a list then a TypeError will
-    be raised.
 
     Returns a list of dictionaries representing a bus:
 
@@ -97,10 +92,6 @@ def BusLookup(stopcode, filterbuses=None):
 
     The list is sorted in order of arrival time with the nearest bus first.
     """
-    # filterbuses should be a list, if it's not then we need to alert the
-    # user.
-    if filterbuses is not None and type(filterbuses) != list:
-        raise TypeError("filterbuses parameter must be a list.")
 
     buslist = __getBusData(stopcode)
 
@@ -141,18 +132,4 @@ def BusLookup(stopcode, filterbuses=None):
     # not always provided in time order)
     # To do this we sort by the timedelta object as this is the most accurate
     # information we have on the buses
-    buses = sorted(buses, key=lambda x: x["delta"])
-
-    # If the user has provided a list of buses then we filter our list so that
-    # our result only includes the desired routes.
-    if filterbuses:
-        # Let's be nice to users, if they provide a list of integers (not
-        # unreasonable for a bus route number) then we'll convert it into a
-        # string to match what's stored in the dictionary
-        # NB string is more appropriate here is as the number represents the
-        # name of the route.
-        filterbuses = [str(x) for x in filterbuses]
-        # Just include buses that our in our list of requested routes
-        buses = [x for x in buses if x["route"] in filterbuses]
-
-    return buses
+    return sorted(buses, key=lambda x: x["delta"])
