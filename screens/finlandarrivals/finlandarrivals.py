@@ -22,10 +22,8 @@ BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
 data = \
 "{" \
 "  stop(id: \"%s\") {" \
-"    name code platformCode" \
 "    stoptimesWithoutPatterns(numberOfDepartures:20) {" \
 "      trip{" \
-"        tripHeadsign" \
 "        route{" \
 "          shortName longName type" \
 "        }" \
@@ -105,10 +103,11 @@ def BusLookup(stopcode):
         b = {}
         # Set the route number of the bus
         b["route"] = bus['trip']['route']['shortName']
+        if not b["route"]:
+            b["route"] = u"0"
         # Set the transport type
         b["type"] = bus['trip']['route']['type']
         # Set the destination of the bus
-        #b["destination"] = bus['trip']['tripHeadsign']
         b["destination"] = bus['trip']['route']['longName']
         # Get the string time and timedelta object of the bus
         b["time"], b["delta"], b["estimated"] = __getBusTime(bus['serviceDay'], bus['scheduledDeparture'], bus['departureDelay'])
