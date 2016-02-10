@@ -20,7 +20,7 @@ LAYOUT = (u"HONIÄRCUBMWLRPI"
           u"IOXÖVERIYTOLVVE"
           u"ETTSEXTREEENIOE"
           u"SJUENTVÅXELVAEN"
-          u"ÅTTATENFYRAFEME"
+          u"ÅTTATIOFYRAFEME"
           u"RPIO'CLOCKHFMEM")
 
 # Map instructions:
