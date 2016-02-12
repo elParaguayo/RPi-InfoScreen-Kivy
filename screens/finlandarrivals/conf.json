@@ -5,8 +5,6 @@
     "dependencies": ["requests"],
     "params": {
         "stops": [
-            {"description": "Tammisaari VR",
-             "stopid": "MATKA:nondr_8991433"},
             {"description": "Pasila",
              "stopid": "HSL:1174552"},
             {"description": "Merituuli Kauppakeskus",
