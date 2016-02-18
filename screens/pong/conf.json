@@ -2,7 +2,7 @@
     "screen": "PongScreen",
     "kv": "pong.kv",
     "dependencies": [],
-    "enabled": true,
+    "enabled": false,
     "params":
         {"winningscore": 5}
 
