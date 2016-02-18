@@ -123,6 +123,10 @@ class SqueezeNowPlaying(Accordion):
     cur_track = DictProperty({"name": "Loading...",
                               "artist": "Loading..."})
 
+    album_name = StringProperty("Loading...")
+    artist_name = StringProperty("Loading...")
+    track_name = StringProperty("Loading...")
+
     # Properties for two scrollviews
     sv_playlist = ObjectProperty(None)
     sv_players_list = ObjectProperty(None)
@@ -148,6 +152,9 @@ class SqueezeNowPlaying(Accordion):
         self.awr = self.sq_root.awr
         self.icon_path = os.path.join(kwargs["plugindir"], "icons")
         self.cur_track = kwargs["cur_track"]
+        self.album_name = self.cur_track.get("album", "Loading...")
+        self.track_name = self.cur_track.get("title", "Loading...")
+        self.artist_name = self.cur_track.get("artist", "Loading...")
         self.player = kwargs["player"]
         self.pl_vol = -1
 
@@ -236,6 +243,10 @@ class SqueezeNowPlaying(Accordion):
         # Set the local flag (so we can check it later)
         self.cur_track = cur_track
 
+        self.album_name = self.cur_track.get("album", "Loading...")
+        self.track_name = self.cur_track.get("title", "Loading...")
+        self.artist_name = self.cur_track.get("artist", "Loading...")
+
         # Update the track time info
         self.updatePlayTime(cur_track)
 
@@ -278,7 +289,10 @@ class SqueezeNowPlaying(Accordion):
             self.duration = cur_track["duration"]
 
         # Calculate the % of track played
-        pr = self.elapsed / self.duration
+        try:
+            pr = self.elapsed / self.duration
+        except ZeroDivisionError:
+            pr = 0
 
         # Split the times into minutes and seconds...
         em, es = divmod(self.elapsed, 60)
@@ -306,6 +320,7 @@ class SqueezeNowPlaying(Accordion):
         # We need to fake an event for the current player.
         event = "{} playlist".format(self.player.get_ref())
         self.sq_root.playlist_changed(event)
+        self.sq_root.track_changed()
 
 
     def updatePlaylist(self, pl):
