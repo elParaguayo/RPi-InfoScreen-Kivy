@@ -16,7 +16,8 @@ class ArtworkResolver(object):
 
         # Custom plugins may use a different image format
         # Set up some methods to handle them
-        self.methods = {"spotifyimage": self.__spotify_url}
+        self.methods = {"spotifyimage": self.__spotify_url,
+                        "imageproxy/spotify:image:": self.__spotify_url}
 
         # Set up the template for local artwork
         self.localart = "http://{host}:{port}/music/{coverid}/cover.jpg"
