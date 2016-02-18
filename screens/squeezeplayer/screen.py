@@ -247,6 +247,9 @@ class SqueezeNowPlaying(Accordion):
         self.track_name = self.cur_track.get("title", "Loading...")
         self.artist_name = self.cur_track.get("artist", "Loading...")
 
+        if self.album_name == "Playlist is empty":
+            Clock.schedule_once(self.refresh_playlist, 1)
+
         # Update the track time info
         self.updatePlayTime(cur_track)
 
