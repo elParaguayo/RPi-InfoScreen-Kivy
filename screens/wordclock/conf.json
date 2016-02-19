@@ -4,6 +4,7 @@
     "dependencies": [],
     "enabled": true,
     "params": {
-        "language": "english"
+        "language": "english",
+        "colour": [0, 200, 200]
     }
 }
