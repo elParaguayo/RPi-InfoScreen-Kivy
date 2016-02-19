@@ -244,9 +244,9 @@ class SqueezeNowPlaying(Accordion):
         # Set the local flag (so we can check it later)
         self.cur_track = cur_track
 
-        self.album_name = self.cur_track.get("album", "Loading...")
-        self.track_name = self.cur_track.get("title", "Loading...")
-        self.artist_name = self.cur_track.get("artist", "Loading...")
+        self.album_name = self.cur_track.get("album", "")
+        self.track_name = self.cur_track.get("title", "")
+        self.artist_name = self.cur_track.get("artist", "")
 
         if self.album_name == "Playlist is empty":
             Clock.schedule_once(self.refresh_playlist, 1)
