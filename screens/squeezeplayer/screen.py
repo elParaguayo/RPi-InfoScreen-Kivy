@@ -41,6 +41,7 @@ from artworkresolver import ArtworkResolver
 # x - remote	If 1, this is a remote track.
 TAGLIST = ["a", "c", "d", "j", "K", "l", "x"]
 
+folder = os.path.dirname(os.path.abspath(__file__))
 
 class SqueezePlayerItem(ButtonBehavior, BoxLayout):
     """Class to represent a squeeze player instance on the network."""
@@ -139,7 +140,7 @@ class SqueezeNowPlaying(Accordion):
     # Play/Pause button changes depending on state, so give an initial value
     sqbtn_pause = ObjectProperty(None)
     pause_icon = StringProperty("sq_play.png")
-    icon_path = StringProperty("")
+    icon_path = StringProperty(os.path.join(folder, "icons"))
 
     # Limit the volume between 0 and 100
     vol = BoundedNumericProperty(10, min=0, max=100, error=10)
