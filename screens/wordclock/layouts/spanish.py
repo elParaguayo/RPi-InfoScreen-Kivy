@@ -35,6 +35,7 @@ LAYOUT = ("ESONPLASWUNADOS"
 #   "pm":  Wording/symbol to indicate afternoon/evening
 MAP = {
        "all": [],
+       "m00": []
        "m05": [60, 67, 68, 69, 70, 71],
        "m10": [60, 75, 76, 77, 78],
        "m15": [60, 81, 82, 83, 84, 85, 86],
