@@ -56,7 +56,7 @@ class WordClockScreen(Screen):
         # Set up some variables to help load the chosen layout.
         self.basepath = os.path.dirname(os.path.abspath(__file__))
         self.layouts = os.path.join(self.basepath, "layouts")
-        self.lang = kwargs["params"]["language"]
+        self.lang = kwargs["params"]["language"].lower()
         self.colour = self.get_colour(kwargs["params"]["colour"])
 
     def get_colour(self, colour):
