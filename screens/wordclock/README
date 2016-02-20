@@ -1,0 +1,21 @@
+Wordclock
+---------
+
+Simple wordclock screen which is the default screen for this project.
+
+There are two available parameters:
+  - "language": selects layout for various languages (default: english)
+  - "colour":   RGB colour code for displaying the time
+
+Languages
+---------
+
+Currently the following languages are available:
+  - English
+  - Spanish
+  - Portuguese
+  - French
+  - Swedish
+  - Finnish
+
+Anybody is welcome to submit further languages!
