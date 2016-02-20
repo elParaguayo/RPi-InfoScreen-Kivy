@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+import json
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -36,6 +37,10 @@ class InfoScreenApp(App):
         return self.base
 
 if __name__ == "__main__":
+    # Load our config
+    with open("config.json", "r") as cfg_file:
+        config = json.load(cfg_file)
+
     # Get a list of installed plugins
     plugins = getPlugins()
 
@@ -53,8 +58,18 @@ if __name__ == "__main__":
         # kv_text += "".join(p["kv"])
         Builder.load_file(p["kvpath"])
 
-    # Start our webserver
-    start_web_server(os.path.dirname(os.path.abspath(__file__)))
+    # Do we want a webserver?
+    web = config.get("webserver", dict())
+    if web.get("enabled"):
+
+        # Start our webserver
+        webport = web.get("webport", 8088)
+        apiport = web.get("apiport", 8089)
+        debug = web.get("debug", False)
+        start_web_server(os.path.dirname(os.path.abspath(__file__)),
+                         webport,
+                         apiport,
+                         debug)
 
     # Good to go. Let's start the app.
     InfoScreenApp().run()

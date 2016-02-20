@@ -5,6 +5,11 @@
     % for screen in screens:
     <tr>
         <td width="30%">{{screen.capitalize()}}</td>
+        <td><button name="submit" type="submit" value="view+{{screen}}"
+            % if not screens[screen]["enabled"]:
+            disabled
+            % end
+            >View</button></td>
         <td><button name="submit" type="submit" value="enable+{{screen}}"
             % if screens[screen]["enabled"]:
             disabled

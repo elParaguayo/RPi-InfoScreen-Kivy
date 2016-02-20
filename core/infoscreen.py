@@ -89,33 +89,69 @@ class InfoScreen(FloatLayout):
             self.scrmgr.current = "FAILEDSCREENS"
 
     def reload_screen(self, screen):
+        # Remove the old screen...
         self.remove_screen(screen)
+
+        # ...and add it again.
         self.add_screen(screen)
 
     def add_screen(self, screenname):
+
+        # Get the info we need to import this screen
         foundscreen = [p for p in getPlugins() if p["name"] == screenname]
-        if foundscreen:
+
+        # Check we've found a screen and it's not already running
+        if foundscreen and not screenname in self.availablescreens:
+
+            # Get the details for the screen
             p = foundscreen[0]
+
+            # Import it
             plugin = imp.load_module("screen", *p["info"])
+
+            # Get the reference to the screen class
             screen = getattr(plugin, p["screen"])
+
+            # Add the KV file to the builder
             Builder.load_file(p["kvpath"])
+
+            # Add the screen
             self.scrmgr.add_widget(screen(name=p["name"],
                                    master=self,
                                    params=p["params"]))
+
+            # Add to our list of available screens
             self.availablescreens.append(screenname)
 
-            self.scrmgr.current = screenname
-            self.index = self.availablescreens.index(screenname)
+            # Activate screen
+            self.switch_to(screename)
+
+        elif screenname in self.availablescreens:
+
+            # This shouldn't happen but we need this to prevent duplicates
+            self.reload_screen(screenname)
 
     def remove_screen(self, screenname):
+
+        # Get the list of screens
         foundscreen = [p for p in getPlugins(inactive=True) if p["name"] == screenname]
+
+        # Loop over list of available screens
         while screenname in self.availablescreens:
+
+            # Remove screen from list of available screens
             self.availablescreens.remove(screenname)
+
+            # Change the display to the next screen
             self.next_screen()
+
+            # Unload the screen from the screen manager
             c = self.scrmgr.get_screen(screenname)
             self.scrmgr.remove_widget(c)
             del c
+
         try:
+            # Remove the KV file from our builder
             Builder.unload_file(foundscreen[0]["kvpath"])
         except IndexError:
             pass
@@ -130,3 +166,13 @@ class InfoScreen(FloatLayout):
 
         self.index = (self.index + inc) % len(self.availablescreens)
         self.scrmgr.current = self.availablescreens[self.index]
+
+    def switch_to(self, screen):
+
+        if screen in self.availablescreens:
+
+            # Activate the screen
+            self.scrmgr.current = screen
+
+            # Update the screen index
+            self.index = self.availablescreens.index(screen)
