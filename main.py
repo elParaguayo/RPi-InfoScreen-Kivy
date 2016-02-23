@@ -26,11 +26,13 @@ VERSION = "0.4.0"
 
 
 class InfoScreenApp(App):
+    base = None
     def build(self):
         # Window size is hardcoded for resolution of official Raspberry Pi
         # display. Can be altered but plugins may not display correctly.
         Window.size = (800, 480)
-        return InfoScreen(plugins=plugins)
+        self.base = InfoScreen(plugins=plugins)
+        return self.base
 
 if __name__ == "__main__":
     # Get a list of installed plugins
