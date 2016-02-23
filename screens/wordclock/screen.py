@@ -30,11 +30,14 @@ class WordClockLetter(Label):
         # Variable for the duration of the animated fade
         self.fadetime = 1
 
+        self.off_colour = [0.15, 0.15, 0.15, 1]
+        self.on_colour = kwargs["colour"]
+
     def toggle(self, on):
         if on:
-            colour = [0, 0.8, 0.8, 1]
+            colour = self.on_colour
         else:
-            colour = [0.15, 0.15, 0.15, 1]
+            colour = self.off_colour
 
         # Add some animation effect to fade between different times.
         if on != self.oldstate:
@@ -53,7 +56,11 @@ class WordClockScreen(Screen):
         # Set up some variables to help load the chosen layout.
         self.basepath = os.path.dirname(os.path.abspath(__file__))
         self.layouts = os.path.join(self.basepath, "layouts")
-        self.lang = kwargs["params"]["language"]
+        self.lang = kwargs["params"]["language"].lower()
+        self.colour = self.get_colour(kwargs["params"]["colour"])
+
+    def get_colour(self, colour):
+        return [x/255.0 for x in colour] + [1]
 
     def on_enter(self):
         # We only want to set up the screen once
@@ -147,7 +154,8 @@ class WordClockScreen(Screen):
             # Create a letter object
             word = WordClockLetter(text=ltr,
                                    size=self.config.SIZE,
-                                   font_size=self.config.FONTSIZE)
+                                   font_size=self.config.FONTSIZE,
+                                   colour=self.colour)
 
             # add it to our list...
             grid.add_widget(word)
