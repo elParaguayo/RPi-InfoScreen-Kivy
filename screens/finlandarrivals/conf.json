@@ -1,0 +1,20 @@
+{
+    "screen": "FinlandArrivalsScreen",
+    "kv": "finlandarrivals.kv",
+    "enabled": false,
+    "dependencies": ["requests"],
+    "params": {
+        "stops": [
+            {"description": "Pasila",
+             "stopid": "HSL:1174552"},
+            {"description": "Merituuli Kauppakeskus",
+             "stopid": "HSL:2432218"},
+            {"description": "Niittyrinne XXL",
+             "stopid": "HSL:2432205"},
+            {"description": "Finnoonsolmu",
+             "stopid": "HSL:2432201"},
+            {"description": "Hannuksentie",
+             "stopid": "HSL:2442204"}
+        ]
+    }
+}
