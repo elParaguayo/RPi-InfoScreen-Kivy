@@ -68,11 +68,11 @@ class CalendarItem(GridLayout):
             # If not, format start and end times
             st = event["start"].strftime("%H:%M")
             en = event["end"].strftime("%H:%M")
-            evtime = "{} - {}".format(st, en)
+            evtime = u"{} - {}".format(st, en)
 
         # Check if there's a location set
         if event["location"]:
-            evtime = "{} - {}".format(evtime, event["location"])
+            evtime = u"{} - {}".format(evtime, event["location"])
 
         # Display the event time and location
         self.evtime = evtime
