@@ -329,7 +329,10 @@ class Player(object):
 
     def playlist_track_count(self):
         """Get the amount of tracks in the current playlist"""
-        return int(self.request('playlist tracks ?'))
+        try:
+            return int(self.request('playlist tracks ?'))
+        except:
+            return 0
 
     def playlist_play_index(self, index):
         """Play track at a certain position in the current playlist
@@ -338,7 +341,11 @@ class Player(object):
 
     def playlist_get_position(self):
         """Get the position of the current track in the playlist"""
-        return self.request('playlist index ?')
+        try:
+            idx = self.request('playlist index ?')
+            return int(idx)
+        except ValueError:
+            return 0
 
     def playlist_get_info(self, taglist=None):
         """Get info about the tracks in the current playlist"""
@@ -370,7 +377,7 @@ class Player(object):
                 item['duration'] = float(item['duration'])
             except KeyError:
                 pass
-                
+
             playlist.append(item)
         return playlist
 

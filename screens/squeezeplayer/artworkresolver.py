@@ -16,7 +16,8 @@ class ArtworkResolver(object):
 
         # Custom plugins may use a different image format
         # Set up some methods to handle them
-        self.methods = {"spotifyimage": self.__spotify_url}
+        self.methods = {"spotifyimage": self.__spotify_url,
+                        "imageproxy/spotify:image:": self.__spotify_url}
 
         # Set up the template for local artwork
         self.localart = "http://{host}:{port}/music/{coverid}/cover.jpg"
@@ -86,7 +87,7 @@ class ArtworkResolver(object):
         """
 
         # List of required keys
-        required = ["remote", "coverid", "coverart"]
+        required = ["remote", "coverart"]
 
         # Check that we've received the right type of data
         if type(track) != dict:
@@ -94,7 +95,7 @@ class ArtworkResolver(object):
 
         # Check if all the keys are present
         if not set(required) < set(track.keys()):
-            raise KeyError("track should have 'remote', 'coverid' and"
+            raise KeyError("track should have 'remote' and"
                            " 'coverart' keys")
 
         # Check the flags for local and remote art
