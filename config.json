@@ -1,0 +1,6 @@
+{"webserver": {
+    "enabled": true,
+    "webport": 8088,
+    "apiport": 8089
+    }
+}
