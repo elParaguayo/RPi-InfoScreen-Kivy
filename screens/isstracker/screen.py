@@ -40,8 +40,6 @@ class ISSScreen(Screen):
         # Create the path icon
         self.path_icon = os.path.join(self.imagefolder, "dot.png")
 
-    def on_enter(self):
-
         # Create the world map
         self.map = MapView(id="mpv",lat=0, lon=0, zoom=1, scale=1.5)
         x, y = self.map.get_window_xy_from(0,0,1)
@@ -56,7 +54,15 @@ class ISSScreen(Screen):
 
         self.draw_iss_path()
 
-        Clock.schedule_interval(self.update, 1)
+        self.timer = None
+
+    def on_enter(self):
+
+        self.timer = Clock.schedule_interval(self.update, 1)
+
+    def on_leave(self):
+
+        Clock.unschedule(self.timer)
 
     def utcnow(self):
         return (datetime.utcnow() - datetime(1970,1,1)).total_seconds()
