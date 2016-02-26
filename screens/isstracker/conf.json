@@ -1,0 +1,6 @@
+{
+    "screen": "ISSScreen",
+    "kv": "isstracker.kv",
+    "dependencies": ["ephem", "concurrent", "requests"],
+    "enabled": false
+}

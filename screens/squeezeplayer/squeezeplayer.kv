@@ -162,19 +162,22 @@
                         bgcolour: 0, 0, 0, 0.5
                         halign: "left"
                         padding: 5, 2
-                        text: root.cur_track["title"]
+                        #text: root.cur_track.get("title")
+                        text: root.track_name
 
                     BGLabel:
                         bgcolour: 0, 0, 0, 0.5
                         halign: "left"
                         padding: 5, 2
-                        text: root.cur_track["artist"]
+                        #text: root.cur_track.get("artist")
+                        text: root.artist_name
 
                     BGLabel:
                         bgcolour: 0, 0, 0, 0.5
                         halign: "left"
                         padding: 5, 2
-                        text: root.cur_track["album"]
+                        #text: root.cur_track.get("album")
+                        text: root.album_name
 
                     BoxLayout:
                         canvas.before:

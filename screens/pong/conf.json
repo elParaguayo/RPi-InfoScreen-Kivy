@@ -1,0 +1,9 @@
+{
+    "screen": "PongScreen",
+    "kv": "pong.kv",
+    "dependencies": [],
+    "enabled": false,
+    "params":
+        {"winningscore": 5}
+
+}

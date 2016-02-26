@@ -1,0 +1,7 @@
+PONG!
+
+Self explanatory really...
+
+Set the winning score total in the config file.
+
+Once the game starts, the screen will lock so you can't switch between screens. The screen only unlocks when a game is over.

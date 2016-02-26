@@ -1,0 +1,35 @@
+A plugin has the following structure
+
+/FolderName (Must be unique)
+ |--> conf.json
+ |--> screen.py
+ |--> NAME.kv
+
+1) FolderName
+
+Must be unique as this is the identifier used by the master script to handle the different screens.
+
+2) conf.json
+
+File must have this name.
+
+JSON formatted file. Has two mandatory parameters:
+   "screen" - the class name of the main screen for the plugin.
+   "kv" - the name of the kv file (including extension) which contains the layout for your plugin.
+
+Optional parameters:
+   "enabled" - plugins can be disabled by setting this to false.
+   "params" - any specific parameters to be passed to your plugin
+   "dependencies" - list any non-standard libraries that are needed to run your plugin. If these aren't installed then the user will be notified.
+
+3) screen.py
+
+File must have this name.
+
+Main python file for your plugin. Must have a class definition matching the "screen" parameter in the conf.json file.
+
+The class must inherit the Kivy Screen class.
+
+4) NAME.kv
+
+This file can be called anything you like as long as it's name matches the name set in the conf.json file.

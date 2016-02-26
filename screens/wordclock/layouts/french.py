@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''This is a custom layout for the RPi InfoScreen wordclock screen.
 
     Custom layouts can be created for the screen by creating a new file in the
@@ -13,14 +14,15 @@
 '''
 
 # Layout is a single string variable which will be looped over by the parser.
-LAYOUT = ("ITQISHCUBMWLRPI"
-          "AOQUARTERFDHALF"
-          "TWENTYSFIVEGTEN"
-          "TOXPASTNYTWELVE"
-          "ONESIXTHREENINE"
-          "SEVENTWOXELEVEN"
-          "EIGHTENFOURFIVE"
-          "RPIO'CLOCKHAMPM")
+LAYOUT = ("ILNESTHUNEDEUXP"
+          "TROISIXOQUATREM"
+          "CINQHUITNEUFDIX"
+          "ONZEBDOUZERSEPT"
+          "HEURESRASPBERRY"
+          "ETMOINSUCINQDIX"
+          "LEJQUARTFDEMIEL"
+          "RPIVINGT-CINQKU"
+          )
 
 # Map instructions:
 # The clock works by rounding the time to the nearest 5 minutes.
@@ -33,34 +35,34 @@ LAYOUT = ("ITQISHCUBMWLRPI"
 #   "am":  Wording/symbol to indicate morning.
 #   "pm":  Wording/symbol to indicate afternoon/evening
 MAP = {
-       "all": [0, 1, 3, 4],
-       "m00": [108, 109, 110, 111, 112, 113, 114],
-       "m05": [37,38, 39, 40, 48, 49, 50, 51],
-       "m10": [42, 43, 44, 48, 49, 50, 51],
-       "m15": [15, 17, 18, 19, 20, 21, 22, 23, 48, 49, 50, 51],
-       "m20": [30, 31, 32, 33, 34, 35, 48, 49, 50, 51],
-       "m25": [30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 48, 49, 50, 51],
-       "m30": [26, 27, 28, 29, 48, 49, 50, 51],
-       "m35": [30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 45, 46],
-       "m40": [30, 31, 32, 33, 34, 35, 45, 46],
-       "m45": [15, 17, 18, 19, 20, 21, 22, 23, 45, 46],
-       "m50": [42, 43, 44, 45, 46],
-       "m55": [37, 38, 39, 40, 45, 46],
-       "h01": [60, 61, 62],
-       "h02": [80, 81, 82],
-       "h03": [66, 67, 68, 69, 70],
-       "h04": [97, 98, 99, 100],
-       "h05": [101, 102, 103, 104],
-       "h06": [63, 64, 65],
-       "h07": [75, 76, 77, 78, 79],
-       "h08": [90, 91, 92, 93, 94],
-       "h09": [71, 72, 73, 74],
-       "h10": [94, 95, 96],
-       "h11": [84, 85, 86, 87, 88, 89],
-       "h12": [54, 55, 56, 57, 58, 59],
-       "am": [116, 117],
-       "pm": [118, 119]
-  }
+        "all": [0, 1, 3, 4, 5, 60, 61, 62, 63, 64],
+        "m00": [],
+        "m05": [83, 84, 85, 86],
+        "m10": [87, 88, 89],
+        "m15": [75, 76, 93, 94, 95, 96, 97],
+        "m20": [108, 109, 110, 111, 112],
+        "m25": [108, 109, 110, 111, 112, 113, 114, 115, 116, 117],
+        "m30": [75, 76, 99, 100, 101, 102, 103],
+        "m35": [77, 78, 79, 80, 81, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117],
+        "m40": [77, 78, 79, 80, 81, 108, 109, 110, 111, 112],
+        "m45": [77, 78, 79, 80, 81, 90, 91, 93, 94, 95, 96, 97],
+        "m50": [77, 78, 79, 80, 81, 87, 88, 89],
+        "m55": [77, 78, 79, 80, 81, 83, 84, 85, 86],
+        "h01": [7, 8, 9],
+        "h02": [65, 10, 11, 12, 13],
+        "h03": [65, 15, 16, 17, 18],
+        "h04": [65, 23, 24, 25, 26, 27, 28],
+        "h05": [65, 30, 31, 32, 33],
+        "h06": [65, 19, 20, 21],
+        "h07": [65, 56, 57, 58, 59],
+        "h08": [65, 34, 35, 36, 37],
+        "h09": [65, 38, 39, 40, 41],
+        "h10": [65, 10, 11, 12],
+        "h11": [65, 45, 46, 47, 48],
+        "h12": [65, 50, 51, 52, 53, 64],
+        "am": [],
+        "pm": [],
+        }
 
 # Number of columns in grid layout
 COLS = 15

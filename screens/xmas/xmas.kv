@@ -1,0 +1,26 @@
+<XmasScreen>:
+    BoxLayout:
+        orientation: "vertical"
+
+        Label:
+            size_hint_y: 0.25
+            text_size: self.size
+            text: root.first_line
+            font_size: 30
+            halign: "left"
+            valign: "middle"
+            padding: 20, 0
+
+        Label:
+            size_hint_y: 0.5
+            text: root.second_line
+            markup: True
+
+        Label:
+            size_hint_y: 0.25
+            text_size: self.size
+            text: root.third_line
+            font_size: 30
+            halign: "right"
+            valign: "middle"
+            padding: 20, 0
