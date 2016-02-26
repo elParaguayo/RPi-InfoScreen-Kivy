@@ -3,6 +3,7 @@ import imp
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.lang import Builder
+from kivy.logger import Logger
 
 from core.failedscreen import FailedScreen
 from core.getplugins import getPlugins
@@ -54,6 +55,8 @@ class InfoScreen(FloatLayout):
                     # We've got at least one unmet dependency for this screen
                     unmet = True
                     p_dep[1].append(d)
+                    Logger.error("Unmet dependencies "
+                                 "for {} screen. Skipping...".format(p["name"]))
 
             # Can we use the screen?
             if unmet:
@@ -68,10 +71,13 @@ class InfoScreen(FloatLayout):
                     self.scrmgr.add_widget(screen(name=p["name"],
                                            master=self,
                                            params=p["params"]))
+                    Logger.info("Screen: {} loaded.".format(p["name"]))
 
                 # Uh oh, something went wrong...
                 except Exception, e:
                     # Add the screen name and error message to our list
+                    Logger.error("Could not import "
+                                 "{} screen. Skipping...".format(p["name"]))
                     failedscreens.append((p["name"], repr(e)))
 
                 else:
@@ -161,7 +167,7 @@ class InfoScreen(FloatLayout):
             if hasattr(c, "unload"):
                 c.unload()
 
-            # Delete the screen    
+            # Delete the screen
             self.scrmgr.remove_widget(c)
             del c
 

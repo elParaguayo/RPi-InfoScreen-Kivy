@@ -7,6 +7,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.graphics import Rectangle, Color
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.behaviors import ButtonBehavior
@@ -69,6 +70,7 @@ if __name__ == "__main__":
         web_enabled = True
 
     except ImportError:
+        Logger.warning("Bottle module not found. Cannot start webserver.")
         web_enabled = False
 
     if web.get("enabled") and web_enabled:
