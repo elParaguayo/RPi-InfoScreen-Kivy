@@ -19,7 +19,6 @@ from core.bglabel import BGLabel, BGLabelButton
 from core.getplugins import getPlugins
 from core.hiddenbutton import HiddenButton
 from core.infoscreen import InfoScreen
-from core.webinterface import start_web_server
 
 # Set the current working directory
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
@@ -60,7 +59,19 @@ if __name__ == "__main__":
 
     # Do we want a webserver?
     web = config.get("webserver", dict())
-    if web.get("enabled"):
+
+    # Is bottle installed?
+    try:
+
+        # I don't like doing it this way (all imports should be at the top)
+        # but I'm feeling lazy
+        from core.webinterface import start_web_server
+        web_enabled = True
+
+    except ImportError:
+        web_enabled = False
+
+    if web.get("enabled") and web_enabled:
 
         # Start our webserver
         webport = web.get("webport", 8088)
