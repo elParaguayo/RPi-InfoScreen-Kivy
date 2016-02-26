@@ -154,8 +154,14 @@ class InfoScreen(FloatLayout):
             # Change the display to the next screen
             self.next_screen()
 
-            # Unload the screen from the screen manager
+            # Find the screen in the screen manager
             c = self.scrmgr.get_screen(screenname)
+
+            # Call its "unload" method:
+            if hasattr(c, "unload"):
+                c.unload()
+
+            # Delete the screen    
             self.scrmgr.remove_widget(c)
             del c
 

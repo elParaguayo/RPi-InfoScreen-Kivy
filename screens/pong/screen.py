@@ -66,6 +66,9 @@ class PongScreen(Screen):
         app = App.get_running_app()
         app.base.toggle_lock(locked)
 
+    def unload(self):
+        self.lock(False)
+
     def on_enter(self):
         self.ball.center = self.center
         self.player1.center_y = self.center_y
