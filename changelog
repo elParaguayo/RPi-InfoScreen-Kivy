@@ -1,3 +1,24 @@
+v0.4 - Fourth VERSION
+
+New screens:
+- ISS Tracker
+- Helsinki Bus (thanks Karrika)
+- Pong
+- Christmas countdown
+
+New wordclock layouts:
+- French
+- Spanish
+- Portuguese
+- Finnish (thanks Karrika)
+- Swedish (thanks Karrika)
+
+Webserver:
+- Enable/disable screens from web browser
+- Configure screens from web browser
+- Screens can provide custom web pages
+
+
 v0.3.1 - Quick update
 
 New Screen:
