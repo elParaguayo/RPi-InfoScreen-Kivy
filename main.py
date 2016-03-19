@@ -24,7 +24,7 @@ from core.infoscreen import InfoScreen
 # Set the current working directory
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 
 
 class InfoScreenApp(App):

@@ -214,6 +214,8 @@ def start_web(appdir, webport, apiport, debug=False):
 
     while infoapp is None:
         infoapp = App.get_running_app()
+        if infoapp and infoapp.base is None:
+            infoapp = None
         sleep(1)
 
     ws = InfoScreenWebServer(infoapp, appdir, apiport)
@@ -226,6 +228,8 @@ def start_api(appdir, apiport, debug=False):
 
     while infoapp is None:
         infoapp = App.get_running_app()
+        if infoapp and infoapp.base is None:
+            infoapp = None
         sleep(1)
 
     ws = InfoScreenAPI(infoapp, appdir)
