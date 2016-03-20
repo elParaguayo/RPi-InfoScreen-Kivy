@@ -210,11 +210,11 @@ class InfoScreenWebServer(Bottle):
 
 def start_web(appdir, webport, apiport, debug=False):
     """Starts the webserver on "webport"."""
-    infoapp = App.get_running_app()
+    infoapp = None
 
     while infoapp is None:
         infoapp = App.get_running_app()
-        if infoapp and infoapp.base is None:
+        if getattr(infoapp, "base", None) is None:
             infoapp = None
         sleep(1)
 
@@ -224,11 +224,11 @@ def start_web(appdir, webport, apiport, debug=False):
 
 def start_api(appdir, apiport, debug=False):
     """Starts the API server on "apiport"."""
-    infoapp = App.get_running_app()
+    infoapp = None
 
     while infoapp is None:
         infoapp = App.get_running_app()
-        if infoapp and infoapp.base is None:
+        if getattr(infoapp, "base", None) is None:
             infoapp = None
         sleep(1)
 
