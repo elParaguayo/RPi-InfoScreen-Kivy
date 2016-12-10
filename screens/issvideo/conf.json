@@ -1,0 +1,6 @@
+{
+    "screen": "ISSVideoScreen",
+    "kv": "issvideo.kv",
+    "dependencies": [],
+    "enabled": false
+}
