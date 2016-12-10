@@ -8,6 +8,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.clock import Clock
+from kivy.uix.scrollview import ScrollView
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
