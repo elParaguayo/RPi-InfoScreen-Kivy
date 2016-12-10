@@ -4,6 +4,9 @@ copypylms.sh
 *.NOTES
 cache/
 
+# Agenda screen secret key
+screens/agenda/secret
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

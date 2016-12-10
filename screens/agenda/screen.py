@@ -172,62 +172,65 @@ class AgendaScreen(Screen):
         # sort them)
         utc = pytz.UTC
 
-        # Have we got a "date" or "dateTime" event?
-        # Parse the start end end times as appropriate
-        if event["start"].get("date", False):
-            start = dateutil.parser.parse(event["start"]["date"])
-            end = dateutil.parser.parse(event["end"]["date"])
-        else:
-            start = dateutil.parser.parse(event["start"]["dateTime"])
-            end = dateutil.parser.parse(event["end"]["dateTime"])
-
-        # Change the end time to one second earlier (useful to check number
-        # of days of event)
-        false_end = end - timedelta(0, 1)
-        duration = false_end - start
-
         # Empty list for our events
         ev_list = []
 
-        # Split long events into daily events
-        for i in range(duration.days + 1):
+        # Check for active events only
+        if not event["status"] == "cancelled":
 
-            # Create a new start time if the daily event start time isn't the
-            # same as the overall start time
-            new_date = start + timedelta(i)
-            if new_date.date() != start.date():
-                st = datetime.combine(new_date.date(),
-                                      dt_time(0, 0, tzinfo=start.tzinfo))
+            # Have we got a "date" or "dateTime" event?
+            # Parse the start end end times as appropriate
+            if event["start"].get("date", False):
+                start = dateutil.parser.parse(event["start"]["date"])
+                end = dateutil.parser.parse(event["end"]["date"])
             else:
-                st = start
+                start = dateutil.parser.parse(event["start"]["dateTime"])
+                end = dateutil.parser.parse(event["end"]["dateTime"])
 
-            # Create a new end time if the daily event end time isn't the same
-            # as the overall end time
-            if new_date.date() != false_end.date():
-                add_day = new_date.date() + timedelta(1)
-                en = datetime.combine(add_day,
-                                      dt_time(0, 0, tzinfo=start.tzinfo))
-            else:
-                en = end
+            # Change the end time to one second earlier (useful to check number
+            # of days of event)
+            false_end = end - timedelta(0, 1)
+            duration = false_end - start
 
-            # If there's no timezone set, then let's set one
-            if st.tzinfo is None:
-                st = utc.localize(st)
+            # Split long events into daily events
+            for i in range(duration.days + 1):
 
-            if en.tzinfo is None:
-                en = utc.localize(en)
+                # Create a new start time if the daily event start time isn't the
+                # same as the overall start time
+                new_date = start + timedelta(i)
+                if new_date.date() != start.date():
+                    st = datetime.combine(new_date.date(),
+                                          dt_time(0, 0, tzinfo=start.tzinfo))
+                else:
+                    st = start
 
-            # Create a dict of the info we need
-            ev = {"fg": fg,
-                  "bg": bg,
-                  "summary": event.get("summary", ""),
-                  "location": event.get("location", ""),
-                  "start": st,
-                  "end": en,
-                  "stdate": st.date()}
+                # Create a new end time if the daily event end time isn't the same
+                # as the overall end time
+                if new_date.date() != false_end.date():
+                    add_day = new_date.date() + timedelta(1)
+                    en = datetime.combine(add_day,
+                                          dt_time(0, 0, tzinfo=start.tzinfo))
+                else:
+                    en = end
 
-            # Add to our list
-            ev_list.append(ev)
+                # If there's no timezone set, then let's set one
+                if st.tzinfo is None:
+                    st = utc.localize(st)
+
+                if en.tzinfo is None:
+                    en = utc.localize(en)
+
+                # Create a dict of the info we need
+                ev = {"fg": fg,
+                      "bg": bg,
+                      "summary": event.get("summary", ""),
+                      "location": event.get("location", ""),
+                      "start": st,
+                      "end": en,
+                      "stdate": st.date()}
+
+                # Add to our list
+                ev_list.append(ev)
 
         return ev_list
 
@@ -253,6 +256,9 @@ class AgendaScreen(Screen):
     def drawCalendars(self):
         """Method to draw the Calendar on the screen."""
         all_events = []
+
+        # Clear the screen to prevent duplication
+        self.calendar_grid.clear_widgets()
 
         time_now = datetime.utcnow()
         end_time = time_now + timedelta(self.max_days)
