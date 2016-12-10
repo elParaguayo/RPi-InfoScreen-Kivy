@@ -4,3 +4,7 @@ ISS Tracker
 Screen to show current position of ISS.
 
 There are no user settings required.
+
+The MapView dependency needs Kivy garden:
+sudo apt-get install kivy-garden
+garden install mapview
