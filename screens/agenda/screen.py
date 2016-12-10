@@ -113,7 +113,7 @@ class AgendaScreen(Screen):
             self.running = True
 
         # Set a clock schedule
-        self.timer = Clock.schedule_interval(self.update, 15)
+        self.timer = Clock.schedule_interval(self.update, 15 * 60)
 
     def update(self, *args):
 
