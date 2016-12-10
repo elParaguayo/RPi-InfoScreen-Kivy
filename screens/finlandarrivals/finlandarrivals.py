@@ -18,7 +18,7 @@ import time
 # This is the address used for the bus stop information.
 # We'll need the bus stop ID but we'll set this when calling
 # out lookup function so, for now, we leave a placeholder for it.
-BASE_URL = ("http://digitransit.fi/otp/routers/finland/index/graphql")
+BASE_URL = ("http://api.digitransit.fi/routing/v1/routers/finland/index/graphql")
 data = \
 "{" \
 "  stop(id: \"%s\") {" \
