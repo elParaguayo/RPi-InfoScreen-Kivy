@@ -106,7 +106,7 @@ def BusLookup(stopcode):
         if not b["route"]:
             b["route"] = u"0"
         # Set the transport type
-        b["type"] = bus['trip']['route']['type']
+        b["type"] = str(bus['trip']['route']['type'])
         # Set the destination of the bus
         b["destination"] = bus['trip']['route']['longName']
         # Get the string time and timedelta object of the bus
