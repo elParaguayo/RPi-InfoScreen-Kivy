@@ -1,0 +1,78 @@
+<Tide>:
+    width: 150
+    size_hint_x: None
+    orientation: "vertical"
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 0.2
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        text: root.desc
+        valign: "middle"
+
+<TidesScreen>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'screens/tides/images/escalles.jpg'
+    FloatLayout:
+        id: tides_float
+
+        BoxLayout:
+            id: tides_base_box
+            Label:
+                id: tides_lbl_load
+                text: "Loading tides..."
+
+        ScreenManager:
+            id: tides_scrmgr
+            auto_bring_to_front: False
+
+<TidesSummary>:
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "[size=20][color=#202020]{name:s}[/color][/size]".format(**root.location)
+            markup: True
+            text_size: self.size
+            valign: "top"
+            halign: "center"
+            padding_y: 5
+        BoxLayout:
+            orientation: "horizontal"
+            Label:
+                text: "[color=#202020][size=60][b]{type_i18n:s} {h:02d}:{m:02d}[/b][/size][/color]".format(**root.prev_t)
+                markup: True
+            Label:
+                text: "[color=#202020][size=60][b]{type_i18n:s} {h:02d}:{m:02d}[/b][/size][/color]".format(**root.next_t)
+                markup: True
+        Label:
+            text: "[size=50]{h:02d}:{m:02d}[/size][size=30] {s:02d}[/size]".format(**root.timedata)
+            markup: True
+            valign: "top"
+            halign: "center"
+            text_size: self.size
+        BoxLayout:
+            padding: 5, 5
+            id: tides_list
+            orientation: "horizontal"
+            size_hint_y: 1
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 5
+            Label:
+                text: "[color=#888888]Photo by Éric Leblond[/color]"
+                text_size: self.size
+                valign: "bottom"
+                halign: "left"
+                markup: True
+            Label:
+                text: "[color=#888888]Data by Worldtides[/color]"
+                text_size: self.size
+                valign: "bottom"
+                halign: "right"
+                markup: True
+

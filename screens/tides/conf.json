@@ -1,0 +1,14 @@
+{
+    "screen": "TidesScreen",
+    "kv": "tides.kv",
+    "dependencies": ["requests", "dateutil", "pytz"],
+    "enabled": true,
+    "params": {
+        "language": "english",
+        "key": "YOUR_API_KEY_HERE",
+        "location": 
+            {"name": "Escalles",
+             "coords": {"lat": 50.921650, "lon": 1.701273}}
+    }
+
+}
