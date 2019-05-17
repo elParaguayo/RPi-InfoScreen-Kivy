@@ -1,3 +1,5 @@
+**Note: This project is no longer active development/maintenance so issues/pull requests may never get answered!**
+
 RPI-Info-Screen
 ===============
 
