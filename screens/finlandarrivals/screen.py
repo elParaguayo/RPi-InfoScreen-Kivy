@@ -125,25 +125,17 @@ class FinlandArrivalsStop(Screen):
         routes = sorted(set([x["route"] for x in self.buses]),
                         key=natural_sort_key)
 
-        # Delete routes that do not exist anymore
-        for child in self.ids.bx_filter.children:
-            route_exists = False
-            for route in routes:
-               if (route == child.text):
-                   route_exists = True
-            if (route_exists == False):
-                self.ids.bx_filter.remove_widget(child)
-
-        # Check for eventual new routes that pop up during the day
+        # Create a toggle button for each route and set it as enabled
+        # for now.
         for route in routes:
-           widget_exists = False
-           for child in self.ids.bx_filter.children:
-               if (route == child.text):
-                   widget_exists = True
-           if (widget_exists == False):
-               tb = ToggleButton(text=route, state="down")
-               tb.bind(state=self.toggled)
-               self.ids.bx_filter.add_widget(tb)
+            route_found=False
+            for child in self.ids.bx_filter.children:
+                if (route == child.text):
+                    route_found = True
+            if (route_found == False):
+                tb = ToggleButton(text=route, state="down")
+                tb.bind(state=self.toggled)
+                self.ids.bx_filter.add_widget(tb)
 
         # Run the "toggled" method now as this updates which buses are shown.
         self.toggled(None, None)
